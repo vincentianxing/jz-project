@@ -1,5 +1,11 @@
 # Project Useful Links
 
+## OpenCV
+
+* videoio module: <https://docs.opencv.org/master/df/d2c/tutorial_table_of_content_videoio.html>
+* Meanshift and Camshift for tracking object in video: <https://docs.opencv.org/master/d7/d00/tutorial_meanshift.html>
+* Background subtraction for generating foreground mask: <https://docs.opencv.org/master/d1/dc5/tutorial_background_subtraction.html>
+
 ## OpenPose
 
 * Documents: <https://github.com/CMU-Perceptual-Computing-Lab/openpose> (including installation)
