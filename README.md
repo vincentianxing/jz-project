@@ -3,6 +3,7 @@
 ## OpenPose
 
 * Documents: <https://github.com/CMU-Perceptual-Computing-Lab/openpose> (including installation)
+  * Installation prerequisite: <https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/prerequisites.md#mac-os-prerequisites>
 
 * Quick start: <https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/quick_start.md#quick-start>
 * Demo: <https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/demo_overview.md>
