@@ -7,8 +7,8 @@
   * Installation prerequisite: <https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/prerequisites.md#mac-os-prerequisites>
   * Configuration: <https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/installation.md#installation>
   * Cmake-gui configuration for mac
-    * /usr/local/Cellar/caffe
-    * /usr/local/lib/libcaffe.dylib
+    * `/usr/local/Cellar/caffe`
+    * `/usr/local/lib/libcaffe.dylib`
   * Building for mac:
   `cd build/`
   `make -j`sysctl -n hw.logicalcpu`
@@ -21,7 +21,3 @@
 ## Other
 
 * Webcam test: <https://www.codingforentrepreneurs.com/blog/opencv-python-web-camera-quick-test/>
-
-* Cmake-gui configuration
-  * /usr/local/Cellar/caffe
-  * /usr/local/lib/libcaffe.dylib
