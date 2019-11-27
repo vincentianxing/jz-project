@@ -5,6 +5,8 @@ cap = cv2.VideoCapture(0)
 
 while(True):
     # Capture frame-by-frame
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
     ret, frame = cap.read()
     # cap.set(CV_CAP_PROP_FPS, 25)
     # Our operations on the frame come here

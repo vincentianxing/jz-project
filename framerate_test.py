@@ -23,6 +23,7 @@ def displayCameraFeed(cameraId, width, height):
         start = time.time()
         ret, frame = cap.read()
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        cv2.imshow('frame',frame)
         end = time.time()
         print ("time to read a frame: " + format(end-start))
 
@@ -36,4 +37,4 @@ def displayCameraFeed(cameraId, width, height):
 
 
 #print getAvailableCameraIds(100)
-displayCameraFeed(0, 1920, 1080)
+displayCameraFeed(0, 640, 480)
