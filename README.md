@@ -24,6 +24,10 @@
   * Demo output keypoints: <https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/output.md#keypoint-ordering-in-c-python>
 * Human foot keypoint dataset: <https://cmu-perceptual-computing-lab.github.io/foot_keypoint_dataset/>
 
+## ball movements
+
+* see the code of pingpong.py
+
 ## Other
 
 * Webcam test: <https://www.codingforentrepreneurs.com/blog/opencv-python-web-camera-quick-test/>
