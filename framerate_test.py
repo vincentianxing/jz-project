@@ -9,7 +9,7 @@ def getAvailableCameraIds(max_to_test):
         temp_camera = cv2.VideoCapture(i)
         if temp_camera.isOpened():
             temp_camera.release()
-            print "found camera with id {}".format(i)
+            print ("found camera with id: " + format(i))
             available_ids.append(i)
     return available_ids
 
@@ -24,7 +24,7 @@ def displayCameraFeed(cameraId, width, height):
         ret, frame = cap.read()
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         end = time.time()
-        print "time to read a frame : {} seconds".format(end-start)
+        print ("time to read a frame: " + format(end-start))
 
         #DISABLED
         #cv2.imshow('frame', frame)
