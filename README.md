@@ -31,3 +31,5 @@
 ## Other
 
 * Webcam test: <https://www.codingforentrepreneurs.com/blog/opencv-python-web-camera-quick-test/>
+
+* Possible resolution for OpenCV: <https://stackoverflow.com/questions/19448078/python-opencv-access-webcam-maximum-resolution>
