@@ -6,7 +6,10 @@
   * Installation: <https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/installation.md#installation>
   * Installation prerequisite: <https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/prerequisites.md#mac-os-prerequisites>
   * Configuration: <https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/installation.md#installation>
-  * Building:
+  * Cmake-gui configuration for mac
+    * /usr/local/Cellar/caffe
+    * /usr/local/lib/libcaffe.dylib
+  * Building for mac:
   `cd build/`
   `make -j`sysctl -n hw.logicalcpu`
 
