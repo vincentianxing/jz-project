@@ -12,3 +12,7 @@
 ## Other
 
 * Webcam test: <https://www.codingforentrepreneurs.com/blog/opencv-python-web-camera-quick-test/>
+
+* Cmake-gui configuration
+  * /usr/local/Cellar/caffe
+  * /usr/local/lib/libcaffe.dylib
