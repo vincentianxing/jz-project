@@ -2,21 +2,29 @@ import numpy as np
 import cv2
 import time
 
+# capture video
 cap = cv2.VideoCapture(0)
 
 while(True):
-    # Capture frame-by-frame
+    # capture frame-by-frame
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 680)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+
+    # set framerate 30
     cap.set(cv2.CAP_PROP_FPS, 30)
+
+    # read frame
     ret, frame = cap.read()
-    # cap.set(CV_CAP_PROP_FPS, 25)
-    # Our operations on the frame come here
+
+    # operations on the frame
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    # Display the resulting frame
-    cv2.imshow('frame',frame)
-    cv2.imshow('gray',gray)
+    # display the resulting frame
+    flip = cv2.flip(frame, +1)
+
+    #cv2.imshow('frame',frame)
+    cv2.imshow('gray', gray)
+    cv2.imshow('flip', flip)
     
     #cv2.resizeWindow('frame', 1200, 900)
 
