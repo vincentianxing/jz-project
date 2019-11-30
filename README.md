@@ -11,10 +11,21 @@
 * Background subtraction for generating foreground mask: <https://docs.opencv.org/master/d1/dc5/tutorial_background_subtraction.html>
 
 * Tracking
-  * Hand detection: <https://medium.com/@soffritti.pierfrancesco/handy-hands-detection-with-opencv-ac6e9fb3cec1>
-  <https://github.com/PierfrancescoSoffritti/handy>
+  * Hand detection: <https://github.com/PierfrancescoSoffritti/handy>
   * Finger detection: <https://github.com/amarlearning/Finger-Detection-and-Tracking>
-  <https://github.com/amarlearning/Finger-Detection-and-Tracking>
+
+## Motion of ball with PyGame
+
+* Basic mechanism of "pingpong" (see code)
+* Combining pygame and opencv: <https://github.com/stbnps/DanceCV>
+* turtle module documentation: <https://docs.python.org/3.3/library/turtle.html?highlight=turtle#turtle.ycor>
+* Bouncing ball simulator with turtle: <https://www.youtube.com/watch?v=ibdICVK0W3Q>
+
+## Other
+
+* Webcam test: <https://www.codingforentrepreneurs.com/blog/opencv-python-web-camera-quick-test/>
+
+* Possible resolution for OpenCV: <https://stackoverflow.com/questions/19448078/python-opencv-access-webcam-maximum-resolution>
 
 ## OpenPose
 
@@ -33,16 +44,3 @@
 * Demo: <https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/demo_overview.md>
   * Demo output keypoints: <https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/output.md#keypoint-ordering-in-c-python>
 * Human foot keypoint dataset: <https://cmu-perceptual-computing-lab.github.io/foot_keypoint_dataset/>
-
-## Motion of ball with PyGame
-
-* Basic mechanism of "pingpong" (see code)
-* Combining pygame and opencv: <https://github.com/stbnps/DanceCV>
-* turtle module documentation: <https://docs.python.org/3.3/library/turtle.html?highlight=turtle#turtle.ycor>
-* Bouncing ball simulator with turtle: <https://www.youtube.com/watch?v=ibdICVK0W3Q>
-
-## Other
-
-* Webcam test: <https://www.codingforentrepreneurs.com/blog/opencv-python-web-camera-quick-test/>
-
-* Possible resolution for OpenCV: <https://stackoverflow.com/questions/19448078/python-opencv-access-webcam-maximum-resolution>
