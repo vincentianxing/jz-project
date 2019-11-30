@@ -32,6 +32,8 @@ running python object-track.py --tracker csrt
 
 * See the code of pingpong.py
 
+* Combine of pygame and opencv https://github.com/stbnps/DanceCV
+
 ## Other
 
 * Webcam test: <https://www.codingforentrepreneurs.com/blog/opencv-python-web-camera-quick-test/>
