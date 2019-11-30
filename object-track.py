@@ -69,7 +69,7 @@ while True:
         break
 
     # resize the frame and grab the frame dimensions TODO
-    frame = imutils.resize(frame, width=500)
+    frame = imutils.resize(frame, width=600)
     (H, W) = frame.shape[:2]
 
     # update the background model for mask
@@ -83,7 +83,8 @@ while True:
         # check if tracking succeed
         if success:
             (x, y, w, h) = [int(v) for v in box]
-            cv2.rectangle(mask, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            cv2.rectangle(mask, (x, y), (x + w, y + h), (255, 255, 255), 2)
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
         # update FPS counter
         fps.update()
@@ -103,7 +104,8 @@ while True:
                         cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
 
     # show the output frame
-    cv2.imshow("mask", mask)
+    flip = cv2.flip(frame, +1)
+    cv2.imshow("mask", flip)
     key = cv2.waitKey(1) & 0xFF
 
     # if 's', select a bounding box to track
