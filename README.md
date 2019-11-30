@@ -5,10 +5,14 @@
 * videoio module: <https://docs.opencv.org/master/df/d2c/tutorial_table_of_content_videoio.html>
 * Meanshift and Camshift for tracking object in video: <https://docs.opencv.org/master/d7/d00/tutorial_meanshift.html>
 * Object tracking: <https://www.pyimagesearch.com/2018/07/30/opencv-object-tracking/>
-`pip install --upgrade imutils`
-`pip install opencv-contrib-python`
-running python object-track.py --tracker csrt
+  * `pip install --upgrade imutils`
+  * `pip install opencv-contrib-python`
+  * run: `python object-track.py --tracker csrt`
 * Background subtraction for generating foreground mask: <https://docs.opencv.org/master/d1/dc5/tutorial_background_subtraction.html>
+
+* Tracking
+  * Hand detection: <https://medium.com/@soffritti.pierfrancesco/handy-hands-detection-with-opencv-ac6e9fb3cec1>
+  * Finger detection: <https://github.com/amarlearning/Finger-Detection-and-Tracking>
 
 ## OpenPose
 
