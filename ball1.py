@@ -46,7 +46,7 @@ def ball_init(right):
 # define event handlers
 def init():
     global score  # these are floats
-    global score1, score2  # these are ints
+    #global score1, score2  # these are ints
     #paddle1_pos = [HALF_PAD_WIDTH - 1,HEIGHT/2]
     #paddle2_pos = [WIDTH +1 - HALF_PAD_WIDTH,HEIGHT/2]
     score = 0

@@ -35,8 +35,8 @@
 ## Motion of ball
 
 * See the code of pingpong.py
-
 * Combining pygame and opencv: <https://github.com/stbnps/DanceCV>
+* Bouncing ball: <https://www.youtube.com/watch?v=HHQV3ifJopo>
 
 ## Other
 
