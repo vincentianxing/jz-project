@@ -54,7 +54,7 @@ while True:
     if frame is None:
         break
     # resize the frame and grab the frame dimensions TODO
-    frame = imutils.resize(frame, width=50)
+    frame = imutils.resize(frame, width=500)
     (H, W) = frame.shape[:2]
     
     # check if is tracking an object
@@ -91,7 +91,7 @@ while True:
     # if 's', select a bounding box to track
     if key == ord("s"):
         # select the box of object you want to track, then press ENTER / SPACE
-        initBB = cv2.selectROI("Frame", frame, frameCenter=False,
+        initBB = cv2.selectROI("Frame", frame, fromCenter=False,
                                 showCrosshair=True)
             
         # start opencv object tracker with supplied box coordinates
