@@ -85,7 +85,7 @@ while True:
         
         
     # show the output frame
-    flip = cv2.flip(frame, +1)
+    flip = cv2.flip(frame, +1) # where flip TODO
     cv2.imshow("Frame", flip)
     key = cv2.waitKey(1) & 0xFF
 
