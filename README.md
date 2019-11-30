@@ -36,7 +36,7 @@
 
 * See the code of pingpong.py
 * Combining pygame and opencv: <https://github.com/stbnps/DanceCV>
-* Bouncing ball: <https://www.youtube.com/watch?v=HHQV3ifJopo>
+* Bouncing ball with turtle: <https://www.youtube.com/watch?v=ibdICVK0W3Q>
 
 ## Other
 
