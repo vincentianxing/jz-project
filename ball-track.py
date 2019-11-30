@@ -165,7 +165,7 @@ while True:
     # update the background model for mask
     mask = backSub.apply(frame)  # frame -> mask
 
-    # declare x, y
+    # declare coordinates x, y
     x = 0
     y = 0
 
