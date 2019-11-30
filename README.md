@@ -36,7 +36,7 @@
 
 * See the code of pingpong.py
 
-* Combine of pygame and opencv https://github.com/stbnps/DanceCV
+* Combining pygame and opencv: <https://github.com/stbnps/DanceCV>
 
 ## Other
 
