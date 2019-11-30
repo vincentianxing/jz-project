@@ -54,9 +54,9 @@ while True:
     if frame is None:
         break
     # resize the frame and grab the frame dimensions TODO
-    #frame = imutils.resize(frame, width=50)
-    #(H, W) = frame.shape[:2]
-
+    frame = imutils.resize(frame, width=50)
+    (H, W) = frame.shape[:2]
+    
     # check if is tracking an object
     if initBB is not None:
         # grab the new bounding box coordinates for object
@@ -84,22 +84,22 @@ while True:
                         cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
         
         
-        # show the output frame
-        cv2.imshow("Frame", frame)
-        key = cv2.waitKey(1) & 0xFF
+    # show the output frame
+    cv2.imshow("Frame", frame)
+    key = cv2.waitKey(1) & 0xFF
 
-        # if 's', select a bounding box to track
-        if key == ord("s"):
-            # select the box of object you want to track, then press ENTER / SPACE
-            initBB = cv2.selectROI("Frame", frame, frameCenter=False,
-                                   showCrosshair=True)
+    # if 's', select a bounding box to track
+    if key == ord("s"):
+        # select the box of object you want to track, then press ENTER / SPACE
+        initBB = cv2.selectROI("Frame", frame, frameCenter=False,
+                                showCrosshair=True)
             
-            # start opencv object tracker with supplied box coordinates
-            tracker.init(frame, initBB)
-            fps = FPS().start()
+        # start opencv object tracker with supplied box coordinates
+        tracker.init(frame, initBB)
+        fps = FPS().start()
         
-        elif key == ord("q"):
-            break
+    elif key == ord("q"):
+        break
 
 # if using webcam, release the pointer
 if not args.get("video", False):
