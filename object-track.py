@@ -49,6 +49,7 @@ while True:
     # grab the current frame, then handle
     frame = vs.read()
     frame = frame[1] if args.get("video", False) else frame
+
     # check if reached end of stream
     if frame is None:
         break
@@ -81,7 +82,8 @@ while True:
             text = "{}: {}".format(k, v)
             cv2.putText(frame, text, (10, H - ((i * 20) + 20)),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
-
+        
+        
         # show the output frame
         cv2.imshow("Frame", frame)
         key = cv2.waitKey(1) & 0xFF

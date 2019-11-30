@@ -7,6 +7,7 @@
 * Object tracking: <https://www.pyimagesearch.com/2018/07/30/opencv-object-tracking/>
 `pip install --upgrade imutils`
 `pip install opencv-contrib-python`
+running python object-track.py --tracker csrt
 * Background subtraction for generating foreground mask: <https://docs.opencv.org/master/d1/dc5/tutorial_background_subtraction.html>
 
 ## OpenPose
