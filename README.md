@@ -32,7 +32,7 @@
   * Demo output keypoints: <https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/output.md#keypoint-ordering-in-c-python>
 * Human foot keypoint dataset: <https://cmu-perceptual-computing-lab.github.io/foot_keypoint_dataset/>
 
-## Motion of ball
+## Motion of ball with PyGame
 
 * See the code of pingpong.py
 * Combining pygame and opencv: <https://github.com/stbnps/DanceCV>
