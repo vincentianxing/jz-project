@@ -56,55 +56,60 @@ else:
 # grab reference to webcam if no video given
 if not args.get("video", False):
     print("starting video stream...")
-    vs = VideoStream(src=0).start()  # read in webcam stream cv2.VideoCapture(0)
+    # read in webcam stream cv2.VideoCapture(0)
+    vs = VideoStream(src=0).start()
     time.sleep(1.0)
 else:
     vs = cv2.VideoCapture(args["video"])
 # initialize FPS throughput estimator
 fps = None
 
-#colors
-WHITE = (255,255,255)
-RED = (255,0,0)
-GREEN = (0,255,0)
-BLACK = (0,0,0)
+# colors
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLACK = (0, 0, 0)
 
-#globals
+# globals
 WIDTH = 600
-HEIGHT = 400      
+HEIGHT = 400
 BALL_RADIUS = 20
 PAD_WIDTH = 8
 PAD_HEIGHT = 80
 HALF_PAD_WIDTH = PAD_WIDTH / 2
 HALF_PAD_HEIGHT = PAD_HEIGHT / 2
-ball_pos = [0,0]
-ball_vel = [0,0]
+ball_pos = [0, 0]
+ball_vel = [0, 0]
 #paddle_vel = 0
 #paddle2_vel = 0
 score = 0
 #r_score = 0
 
-#canvas declaration
+# canvas declaration
 camera = cv2.VideoCapture(0)
 pygame.init()
 pygame.display.set_caption("Play Balls!")
-screen = pygame.display.set_mode([WIDTH,HEIGHT])
+screen = pygame.display.set_mode([WIDTH, HEIGHT])
+
 
 def ball_init():
-    global ball_pos, ball_vel # these are vectors stored as lists
-    ball_pos = [300,100]
-    horz = int(random.randrange(2,4))
+    global ball_pos, ball_vel  # these are vectors stored as lists
+    ball_pos = [300, 100]
+    horz = int(random.randrange(2, 4))
     vert = 0
-    
-    #if right == False:
+
+    # if right == False:
     #    horz = - horz
     ball_vel = [0, vert]
 
 # define event handlers
+
+
 def init():
     global score  # these are floats
     score = 0
     ball_init()
+
 
 def draw(canvas, x, y):
     global ball_pos, ball_vel, score
@@ -112,23 +117,23 @@ def draw(canvas, x, y):
     #pygame.draw.line(canvas, WHITE, [0, HEIGHT + 1 - PAD_WIDTH],[WIDTH, HEIGHT + 1 - PAD_WIDTH], 1)
 
     ball_vel[1] += 0.98
-    #update ball
+    # update ball
     ball_pos[0] += int(ball_vel[0])
     ball_pos[1] += int(ball_vel[1])
 
-    #draw ball
+    # draw ball
     pygame.draw.circle(canvas, RED, ball_pos, 20, 0)
 
-    #ball collision check on top and bottom walls
+    # ball collision check on top and bottom walls
     if int(ball_pos[1]) <= BALL_RADIUS:
         ball_vel[1] = - ball_vel[1]
     if int(ball_pos[0]) <= BALL_RADIUS:
         ball_vel[0] = -ball_vel[0]
     if int(ball_pos[0]) >= WIDTH + 1 - BALL_RADIUS:
         ball_vel[0] = -ball_vel[0]
-    
-    #ball collison check on gutters or paddles
-    #if int(ball_pos[1]) >= HEIGHT + 1 - BALL_RADIUS:
+
+    # ball collison check on gutters or paddles
+    # if int(ball_pos[1]) >= HEIGHT + 1 - BALL_RADIUS:
     #    ball_vel[1] = -ball_vel[1]
         #ball_vel[0] *= 1.1
         #ball_vel[1] *= 1.1
@@ -139,13 +144,13 @@ def draw(canvas, x, y):
     if int(ball_pos[1]) >= HEIGHT + 1 - BALL_RADIUS:
         ball_init()
 
-    #update scores
+    # update scores
     myfont1 = pygame.font.SysFont("Comic Sans MS", 20)
-    label = myfont1.render("Score "+str(score), 1, (255,255,0))
-    canvas.blit(label, (50,20)) 
+    label = myfont1.render("Score "+str(score), 1, (255, 255, 0))
+    canvas.blit(label, (50, 20))
+
 
 init()
-
 
 
 # loop over frames from stream
@@ -216,16 +221,16 @@ while True:
         break
 
     #ret, frame = camera.read()
-		
-    screen.fill([0,0,0])
+
+    screen.fill([0, 0, 0])
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     frame = frame.swapaxes(0, 1)
     frame = pygame.surfarray.make_surface(frame)
-    screen.blit(frame, (0,0))
+    screen.blit(frame, (0, 0))
     draw(screen, x, y)
-        
+
     pygame.display.update()
-        
+
     for event in pygame.event.get():
         if event.type == QUIT or event.type == KEYDOWN:
             sys.exit(0)
