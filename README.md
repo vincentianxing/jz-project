@@ -12,7 +12,9 @@
 
 * Tracking
   * Hand detection: <https://medium.com/@soffritti.pierfrancesco/handy-hands-detection-with-opencv-ac6e9fb3cec1>
+  <https://github.com/PierfrancescoSoffritti/handy>
   * Finger detection: <https://github.com/amarlearning/Finger-Detection-and-Tracking>
+  <https://github.com/amarlearning/Finger-Detection-and-Tracking>
 
 ## OpenPose
 
@@ -34,9 +36,10 @@
 
 ## Motion of ball with PyGame
 
-* See the code of pingpong.py
+* Basic mechanism of "pingpong" (see code)
 * Combining pygame and opencv: <https://github.com/stbnps/DanceCV>
-* Bouncing ball with turtle: <https://www.youtube.com/watch?v=ibdICVK0W3Q>
+* turtle module documentation: <https://docs.python.org/3.3/library/turtle.html?highlight=turtle#turtle.ycor>
+* Bouncing ball simulator with turtle: <https://www.youtube.com/watch?v=ibdICVK0W3Q>
 
 ## Other
 
