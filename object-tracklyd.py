@@ -4,6 +4,7 @@ import argparse
 import imutils
 import time
 import cv2
+import random
 
 # parsing arguments
 ap = argparse.ArgumentParser()
@@ -16,6 +17,7 @@ ap.add_argument("-v", "--video", type=str,
 ap.add_argument("-t", "--tracker", type=str, default="kcf",
                 help="OpenCV object tracker type")
 args = vars(ap.parse_args())
+
 
 # call appropriate object tracker constructor
 # intialize dict for tracker
@@ -45,8 +47,12 @@ else:
 fps = None
 circleX = 500
 circleY =  0
+
 # down: 0 up: 1 left: 2 right: 3
 direction = 0
+prevdir = 0
+dvelocity = 0
+changeMode = 0
 
 # loop over frames from stream
 while True:
@@ -72,53 +78,87 @@ while True:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
             if circleY > 500:
-                cv2.putText(frame, 'You Fail!', 
-                    (400,250), 
-                    cv2.FONT_HERSHEY_SIMPLEX, 
-                    0.6, 
-                    (255,0,0), 
-                    2)
-                cv2.imshow("Frame", frame)
-                time.sleep(5)
                 break
             
-            if circleX < 0:
-                direction = 2
-                circleX = 1000
-
-            if circleX > 1000:
-                direction = 3
-                circleX = 0
-
-            if circleY < 0:
-                circleY = 0
-                direction = 0
-            
-            if circleX > x and circleX < x + w and circleY > y and circleY < y + h :
+            if circleX > x and circleX < x + w and circleY > y and circleY < y + h: 
                 if (circleX - x) < (x + w - circleX):
                     if (circleY - y) < (y + h - circleY):
                         direction = 2
-                        circleX = x
+                        dvelocity = 0
+                        #circleX = x
                     else:
                         direction = 0
-                        circleX = x
+                        dvelocity = 0
+                        #circleX = x
                 else:
                     if (circleY - y) < (y + h - circleY):
                         direction = 3
-                        circleX = x+w
+                        dvelocity = 0
+                        #circleX = x+w
                     else:
                         direction = 0
-                        circleX = x+w
+                        dvelocity = 0
+                        #circleX = x+w
+                changeMode = 1
 
+            if circleY <= 5:
+                prevdir = direction
+                direction = 0
+            if circleX <= 5:
+                prevdir = direction
+                direction = 3
+                changeMode = 1
+            if circleX >= 995:
+                prevdir = direction
+                direction = 2
+                changeMode = 1
             cv2.circle(frame, (circleX,circleY), 5, (255, 0, 0), 10)
+            cv2.rectangle(frame, (circleX - 5, circleY - 35), (circleX + 5, circleY), (0, 0, 255), 10)
+            cv2.rectangle(frame, (circleX - 7, circleY - 50), (circleX - 5, circleY - 35), (0, 255, 255), 2)
+            cv2.rectangle(frame, (circleX - 1, circleY - 50), (circleX + 1, circleY - 35), (0, 255, 255), 2)
+            cv2.rectangle(frame, (circleX + 5, circleY - 50), (circleX + 7, circleY - 35), (0, 255, 255), 2)
+            cv2.circle(frame, (circleX-5, circleY - 25), 2, (255, 0, 0), 4)
+            cv2.circle(frame, (circleX+5, circleY - 25), 2, (255, 0, 0), 4)
+            cv2.circle(frame, (circleX, circleY - 15), 3, (0, 255, 0), 6)
+            cv2.circle(frame, (circleX, circleY - 17), 3, (0, 0, 255), 6)
+            cv2.line(frame, (circleX - 8, circleY - 15), (circleX - 38, circleY - 35), (0,125,125), 3)
+            cv2.line(frame, (circleX + 8, circleY - 15), (circleX + 38, circleY - 35), (0,125,125), 3)
+            if (changeMode == 1):
+                changeMode = 0
+                cv2.circle(frame, (circleX,circleY), 5, (random.randrange(1, 255), random.randrange(1, 255), random.randrange(1, 255)), 10)
+                cv2.rectangle(frame, (circleX - 5, circleY - 35), (circleX + 5, circleY), (random.randrange(1, 255),0,random.randrange(1, 255)), 10)
+                cv2.rectangle(frame, (circleX - 7, circleY - 50), (circleX - 5, circleY - 35), (random.randrange(1, 255), random.randrange(1, 255), random.randrange(1, 255)), 2)
+                cv2.rectangle(frame, (circleX - 1, circleY - 50), (circleX + 1, circleY - 35), (random.randrange(1, 255), random.randrange(1, 255), random.randrange(1, 255)), 2)
+                cv2.rectangle(frame, (circleX + 5, circleY - 50), (circleX + 7, circleY - 35), (random.randrange(1, 255), random.randrange(1, 255), random.randrange(1, 255)), 2)
+                cv2.circle(frame, (circleX-5, circleY - 25), 2, (random.randrange(1, 255), random.randrange(1, 255), random.randrange(1, 255)), 4)
+                cv2.circle(frame, (circleX+5, circleY - 25), 2, (random.randrange(1, 255), random.randrange(1, 255), random.randrange(1, 255)), 4)
+                cv2.circle(frame, (circleX, circleY - 15), 3, (random.randrange(1, 255), random.randrange(1, 255), random.randrange(1, 255)), 6)
+                cv2.circle(frame, (circleX, circleY - 17), 3, (0, 0, 255), 6)
+                cv2.line(frame, (circleX - 8, circleY - 15), (circleX - random.randrange(25, 40), circleY - random.randrange(1, 40)), (random.randrange(1, 255),random.randrange(1, 255),random.randrange(1, 255)), 2)
+                cv2.line(frame, (circleX + 8, circleY - 15), (circleX + random.randrange(25, 40), circleY - random.randrange(1, 40)), (random.randrange(1, 255),random.randrange(1, 255),random.randrange(1, 255)), 2)
             if direction == 0:
-                circleY = circleY + 5
+                if prevdir == 2:
+                    circleY = circleY + 5 + dvelocity
+                    circleX = circleX - 2
+                    dvelocity += 1
+                elif prevdir == 3:
+                    circleY = circleY + 5 + dvelocity
+                    circleX = circleX + 2
+                    dvelocity += 1
+                else:
+                    circleY = circleY + 5 + dvelocity
+                    dvelocity += 1
             elif direction == 2:
-                circleX = circleX - 5
+                circleX = circleX - 2
+                circleY = circleY - 5 + dvelocity
+                dvelocity += 1
             elif direction == 3:
-                circleX = circleX + 5
+                circleX = circleX + 2
+                circleY = circleY - 5 + dvelocity
+                dvelocity += 1
             else:
-                circleY = circleY - 5
+                circleY = circleY - 5 + dvelocity
+                dvelocity += 1
 
         # update FPS counter
         fps.update()
