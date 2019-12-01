@@ -1,7 +1,5 @@
 # Project Useful Links
 
-## Member: Vincent Zhu, Ran Liu, Yuda Liu
-
 ## OpenCV
 
 * videoio module: <https://docs.opencv.org/master/df/d2c/tutorial_table_of_content_videoio.html>
@@ -46,3 +44,5 @@
 * Demo: <https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/demo_overview.md>
   * Demo output keypoints: <https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/output.md#keypoint-ordering-in-c-python>
 * Human foot keypoint dataset: <https://cmu-perceptual-computing-lab.github.io/foot_keypoint_dataset/>
+
+### Member: Vincent Zhu, Ran Liu, Yuda Liu
