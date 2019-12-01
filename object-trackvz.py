@@ -51,7 +51,8 @@ else:
 # grab reference to webcam if no video given
 if not args.get("video", False):
     print("starting video stream...")
-    vs = VideoStream(src=0).start()  # read in webcam stream cv2.VideoCapture(0)
+    # read in webcam stream cv2.VideoCapture(0)
+    vs = VideoStream(src=0).start()
     time.sleep(1.0)
 else:
     vs = cv2.VideoCapture(args["video"])
