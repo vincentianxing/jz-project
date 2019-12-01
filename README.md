@@ -1,5 +1,7 @@
 # Project Useful Links
 
+## Member: Vincent Zhu, Ran Liu, Yuda Liu
+
 ## OpenCV
 
 * videoio module: <https://docs.opencv.org/master/df/d2c/tutorial_table_of_content_videoio.html>
