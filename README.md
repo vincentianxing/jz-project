@@ -1,6 +1,6 @@
 # Project Useful Links
 
-* Member: Vincent Zhu, Ran Liu, Yuda Liu
+### Member: Vincent Zhu, Ran Liu, Yuda Liu
 
 ## OpenCV
 
