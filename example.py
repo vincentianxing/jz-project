@@ -11,7 +11,7 @@ hand_rect_two_x = None
 hand_rect_two_y = None
 
 
-def rescale_frame(frame, wpercent=130, hpercent=130):
+def rescale_frame(frame, wpercent=90, hpercent=90):
     width = int(frame.shape[1] * wpercent / 100)
     height = int(frame.shape[0] * hpercent / 100)
     return cv2.resize(frame, (width, height), interpolation=cv2.INTER_AREA)
@@ -20,7 +20,7 @@ def rescale_frame(frame, wpercent=130, hpercent=130):
 def contours(hist_mask_image):
     gray_hist_mask_image = cv2.cvtColor(hist_mask_image, cv2.COLOR_BGR2GRAY)
     ret, thresh = cv2.threshold(gray_hist_mask_image, 0, 255, 0)
-    _, cont, hierarchy = cv2.findContours(
+    cont, hierarchy = cv2.findContours(
         thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     return cont
 
@@ -82,14 +82,12 @@ def hist_masking(frame, hist):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     dst = cv2.calcBackProject([hsv], [0, 1], hist, [0, 180, 0, 256], 1)
 
-    disc = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (31, 31))
+    disc = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (11, 11))
     cv2.filter2D(dst, -1, disc, dst)
 
-    ret, thresh = cv2.threshold(dst, 150, 255, cv2.THRESH_BINARY)
-
-    # thresh = cv2.dilate(thresh, None, iterations=5)
-
+    ret, thresh = cv2.threshold(dst, 100, 255, 0)
     thresh = cv2.merge((thresh, thresh, thresh))
+    cv2.GaussianBlur(dst, (3, 3), 0, dst)
 
     return cv2.bitwise_and(frame, thresh)
 

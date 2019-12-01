@@ -59,7 +59,7 @@ def hand_histogram(frame):
 
 # find components of the frame that contains skin
 # use histogram to separate features in an image with back projection
-def hist_making(frame, hist):
+def hist_masking(frame, hist):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     # apply back projection
     dst = cv2.calcBackProject([hsv], [0, 1], hist, [0, 180, 0, 256], 1)
@@ -70,3 +70,38 @@ def hist_making(frame, hist):
     thresh = cv2.merge((thresh, thresh, thresh))
 
     return cv2.bitwise_and(frame, thresh)
+
+def manage_image_opr():
+    
+
+def rescale_frame(frame):
+    return cv2.resize(frame, (600, 480), interpolation=cv2.INTER_AREA)
+
+def main():
+    global hand_hist
+    is_hand_hist_created = False
+    vs = cv2.VideoCapture(0) # video stream
+
+    while vs.isOpened():
+        pressed_key = cv2.waitKey(1)
+        _, frame = vs.read()
+
+        if pressed_key & 0xFF == ord ('z'):
+            is_hand_hist_created = True
+            hand_hist = hand_histogram(frame)
+
+        if is_hand_hist_created:
+            manage_image_opr(frame, hand_hist)
+        
+        else:
+            frame = draw_rect(frame)
+        
+        cv2.imshow("frame", rescale_frame(frame))
+
+        if pressed_key == 27:
+            break
+    
+    cv2.destroyAllWindows()
+    vs.release()
+
+if __name__ == '__main__':

@@ -12,8 +12,9 @@
 
 * Tracking
   * Hand detection: <https://github.com/PierfrancescoSoffritti/handy>
-  * Finger detection: <https://github.com/amarlearning/Finger-Detection-and-Tracking>
-  
+  * Finger detection:
+    * <https://github.com/amarlearning/Finger-Detection-and-Tracking>
+    * <http://www.benmeline.com/finger-tracking-with-opencv-and-python/>
   * Back projection: <https://docs.opencv.org/2.4/doc/tutorials/imgproc/histograms/back_projection/back_projection.html>
 
 ## Motion of ball with PyGame
