@@ -23,13 +23,12 @@ def rescale_frame(frame, wpercent=90, hpercent=90):
 def contours(hist_mask_image):
     gray = cv2.cvtColor(hist_mask_image, cv2.COLOR_BGR2GRAY)
     ret, thresh = cv2.threshold(gray, 0, 255, 0)
-    cont, hierarchy = cv2.findContours(
-        #thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-        thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    _, cont, hierarchy = cv2.findContours(
+        thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     return cont
 
 
-def max_contour(contour_list):
+def max_contour(contour_list, frame):
     max_i = 0
     max_area = 0
 
@@ -39,9 +38,8 @@ def max_contour(contour_list):
         if area > max_area:
             max_area = area
             max_i = i
-
-        c = contour_list[max_i]
-        return c
+        
+    return contour_list[max_i]
 
 
 def draw_rect(frame):
@@ -84,12 +82,12 @@ def hist_masking(frame, hist):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     dst = cv2.calcBackProject([hsv], [0, 1], hist, [0, 180, 0, 256], 1)
 
-    disc = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (33, 33)) #TODO
+    disc = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (33, 33))  # TODO
     cv2.filter2D(dst, -1, disc, dst)
 
-    ret, thresh = cv2.threshold(dst, 200, 255, 0) #TODO
+    ret, thresh = cv2.threshold(dst, 100, 255, 0)  # TODO
     thresh = cv2.merge((thresh, thresh, thresh))
-    
+
     cv2.GaussianBlur(dst, (3, 3), 0, dst)
 
     res = cv2.bitwise_and(frame, thresh)
@@ -138,11 +136,21 @@ def draw_circles(frame, traverse_point):
 def manage_image_opr(frame, hand_hist):
     hist_mask_image = hist_masking(frame, hand_hist)
     contour_list = contours(hist_mask_image)
-    max_cont = max_contour(contour_list)
+    cv2.drawContours(frame, contour_list, -1, [255, 0, 0], 4)
+    max_cont = max_contour(contour_list, frame)
+    cv2.drawContours(frame, max_cont, 0, [0, 0, 255], 4)
 
-    # fitting an ellipse
-    ellipse = cv2.fitEllipse(max_cont)
-    cv2.ellipse(frame, ellipse, (0, 255, 0),2)
+    # fitting an ellipse / rectangle
+    #ellipse = cv2.fitEllipse(max_cont)
+    #cv2.ellipse(frame, ellipse, (0, 255, 0),2)
+    print(max_cont)
+    for c in max_cont:
+        M = cv2.moments(c)
+        if M['m00'] != 0:
+            print("here")
+            cx = int(M['m10']/M['m00'])
+            cy = int(M['m01']/M['m00'])
+            cv2.circle(frame, (cx, cy), 5, [255, 0, 0], -1)
 
     cnt_centroid = centroid(max_cont)
     cv2.circle(frame, cnt_centroid, 5, [255, 0, 255], -1)
@@ -161,6 +169,7 @@ def manage_image_opr(frame, hand_hist):
             traverse_point.append(far_point)
 
         draw_circles(frame, traverse_point)
+
     return frame
 
 
