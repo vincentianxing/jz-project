@@ -1,5 +1,8 @@
+from __future__ import print_function
 import cv2
 import numpy as np
+import image_analysis
+import argparse
 
 hand_hist = None
 traverse_point = []
@@ -60,7 +63,6 @@ def draw_rect(frame):
         cv2.rectangle(frame, (hand_rect_one_y[i], hand_rect_one_x[i]),
                       (hand_rect_two_y[i], hand_rect_two_x[i]),
                       (0, 255, 0), 1)
-
     return frame
 
 
@@ -85,11 +87,12 @@ def hist_masking(frame, hist):
     disc = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (11, 11))
     cv2.filter2D(dst, -1, disc, dst)
 
-    ret, thresh = cv2.threshold(dst, 100, 255, 0)
+    ret, thresh = cv2.threshold(dst, 150, 255, 0)
     thresh = cv2.merge((thresh, thresh, thresh))
-    cv2.GaussianBlur(dst, (3, 3), 0, dst)
+    #cv2.GaussianBlur(dst, (3, 3), 0, dst)
 
-    return cv2.bitwise_and(frame, thresh)
+    res = cv2.bitwise_and(frame, thresh)
+    return res
 
 
 def centroid(max_contour):
@@ -153,9 +156,47 @@ def manage_image_opr(frame, hand_hist):
             traverse_point.append(far_point)
 
         draw_circles(frame, traverse_point)
+    return frame
+
+
+"""
+def draw_final(self, frame, hand_hist):
+    hand_masked = image_analysis.apply_hist_mask(
+        frame, hand_hist)
+
+    contours = image_analysis.contours(hand_masked)
+    if contours is not None and len(contours) > 0:
+        max_contour = image_analysis.max_contour(contours)
+        hull = image_analysis.hull(max_contour)
+        centroid = image_analysis.centroid(max_contour)
+        defects = image_analysis.defects(max_contour)
+
+        if centroid is not None and defects is not None and len(defects) > 0:
+            farthest_point = image_analysis.farthest_point(
+                defects, max_contour, centroid)
+
+            if farthest_point is not None:
+                self.plot_farthest_point(frame, farthest_point)
+"""
 
 
 def main():
+    # Background seperation
+    parser = argparse.ArgumentParser(description='This program shows how to use background subtraction methods provided by \
+                                              OpenCV. You can process both videos and images.')
+    parser.add_argument('--input', type=str,
+                        help='Path to a video or a sequence of image.', default='vtest.avi')
+    parser.add_argument('--algo', type=str,
+                        help='Background subtraction method (KNN, MOG2).', default='MOG2')
+    args = parser.parse_args()
+
+    # create background subtractor objects
+    if args.algo == 'MOG2':
+        backSub = cv2.createBackgroundSubtractorMOG2()
+    else:
+        backSub = cv2.createBackgroundSubtractorKNN()
+
+    # Skin detection
     global hand_hist
     is_hand_hist_created = False
     capture = cv2.VideoCapture(0)
@@ -163,18 +204,24 @@ def main():
     while capture.isOpened():
         pressed_key = cv2.waitKey(1)
         _, frame = capture.read()
+        hist = frame
+
+        frame = backSub.apply(frame)
 
         if pressed_key & 0xFF == ord('z'):
             is_hand_hist_created = True
             hand_hist = hand_histogram(frame)
 
         if is_hand_hist_created:
-            manage_image_opr(frame, hand_hist)
+            hist = hist_masking(frame, hand_hist)
+            frame = manage_image_opr(frame, hand_hist)
+            #draw_final(frame, hand_hist)
 
         else:
             frame = draw_rect(frame)
 
-        cv2.imshow("Live Feed", rescale_frame(frame))
+        cv2.imshow("webcam", rescale_frame(frame))
+        cv2.imshow("histogram mask", rescale_frame(hist))
 
         if pressed_key == 27:
             break
