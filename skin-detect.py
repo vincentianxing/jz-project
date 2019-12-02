@@ -21,10 +21,11 @@ def rescale_frame(frame, wpercent=90, hpercent=90):
 
 
 def contours(hist_mask_image):
-    gray_hist_mask_image = cv2.cvtColor(hist_mask_image, cv2.COLOR_BGR2GRAY)
-    ret, thresh = cv2.threshold(gray_hist_mask_image, 0, 255, 0)
+    gray = cv2.cvtColor(hist_mask_image, cv2.COLOR_BGR2GRAY)
+    ret, thresh = cv2.threshold(gray, 0, 255, 0)
     cont, hierarchy = cv2.findContours(
-        thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        #thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     return cont
 
 
@@ -34,14 +35,13 @@ def max_contour(contour_list):
 
     for i in range(len(contour_list)):
         cnt = contour_list[i]
-
-        area_cnt = cv2.contourArea(cnt)
-
-        if area_cnt > max_area:
-            max_area = area_cnt
+        area = cv2.contourArea(cnt)
+        if area > max_area:
+            max_area = area
             max_i = i
 
-        return contour_list[max_i]
+        c = contour_list[max_i]
+        return c
 
 
 def draw_rect(frame):
@@ -84,12 +84,13 @@ def hist_masking(frame, hist):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     dst = cv2.calcBackProject([hsv], [0, 1], hist, [0, 180, 0, 256], 1)
 
-    disc = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (11, 11))
+    disc = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (33, 33)) #TODO
     cv2.filter2D(dst, -1, disc, dst)
 
-    ret, thresh = cv2.threshold(dst, 150, 255, 0)
+    ret, thresh = cv2.threshold(dst, 200, 255, 0) #TODO
     thresh = cv2.merge((thresh, thresh, thresh))
-    #cv2.GaussianBlur(dst, (3, 3), 0, dst)
+    
+    cv2.GaussianBlur(dst, (3, 3), 0, dst)
 
     res = cv2.bitwise_and(frame, thresh)
     return res
@@ -100,7 +101,7 @@ def centroid(max_contour):
     if moment['m00'] != 0:
         cx = int(moment['m10'] / moment['m00'])
         cy = int(moment['m01'] / moment['m00'])
-        return cx, cy
+        return (cx, cy)
     else:
         return None
 
@@ -138,6 +139,10 @@ def manage_image_opr(frame, hand_hist):
     hist_mask_image = hist_masking(frame, hand_hist)
     contour_list = contours(hist_mask_image)
     max_cont = max_contour(contour_list)
+
+    # fitting an ellipse
+    ellipse = cv2.fitEllipse(max_cont)
+    cv2.ellipse(frame, ellipse, (0, 255, 0),2)
 
     cnt_centroid = centroid(max_cont)
     cv2.circle(frame, cnt_centroid, 5, [255, 0, 255], -1)
@@ -206,14 +211,14 @@ def main():
         _, frame = capture.read()
         hist = frame
 
-        frame = backSub.apply(frame)
+        mask = backSub.apply(frame)
 
         if pressed_key & 0xFF == ord('z'):
             is_hand_hist_created = True
             hand_hist = hand_histogram(frame)
 
         if is_hand_hist_created:
-            hist = hist_masking(frame, hand_hist)
+            #frame = hist_masking(frame, hand_hist)
             frame = manage_image_opr(frame, hand_hist)
             #draw_final(frame, hand_hist)
 
@@ -221,7 +226,7 @@ def main():
             frame = draw_rect(frame)
 
         cv2.imshow("webcam", rescale_frame(frame))
-        cv2.imshow("histogram mask", rescale_frame(hist))
+        #cv2.imshow("histogram mask", rescale_frame(hist))
 
         if pressed_key == 27:
             break
