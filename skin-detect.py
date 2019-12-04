@@ -1,50 +1,26 @@
 from __future__ import print_function
 import cv2
 import numpy as np
-import image_analysis
 import argparse
 
 hand_hist = None # histogram generated from hand sample
-traverse_point = []
-total_rectangle = 9
+size = 9
 hand_rect_one_x = None
 hand_rect_one_y = None
-
 hand_rect_two_x = None
 hand_rect_two_y = None
+traverse_point = []
 
-
+# resize ouput window TODO
 def rescale_frame(frame, wpercent=90, hpercent=90):
     width = int(frame.shape[1] * wpercent / 100)
     height = int(frame.shape[0] * hpercent / 100)
     return cv2.resize(frame, (width, height), interpolation=cv2.INTER_AREA)
 
-
-def contours(hist_mask_image):
-    gray = cv2.cvtColor(hist_mask_image, cv2.COLOR_BGR2GRAY)
-    ret, thresh = cv2.threshold(gray, 0, 255, 0)
-    _, cont, hierarchy = cv2.findContours(
-        thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    return cont
-
-
-def max_contour(contour_list, frame):
-    max_i = 0
-    max_area = 0
-
-    for i in range(len(contour_list)):
-        cnt = contour_list[i]
-        area = cv2.contourArea(cnt)
-        if area > max_area:
-            max_area = area
-            max_i = i
-        
-    return contour_list[max_i]
-
 # draw region for skin sample
 def draw_rect(frame):
     rows, cols, _ = frame.shape
-    global total_rectangle, hand_rect_one_x, hand_rect_one_y, hand_rect_two_x, hand_rect_two_y
+    global size, hand_rect_one_x, hand_rect_one_y, hand_rect_two_x, hand_rect_two_y
 
     # four arrays to hold the coordinates of each rectangle
     hand_rect_one_x = np.array(
@@ -59,7 +35,7 @@ def draw_rect(frame):
     hand_rect_two_y = hand_rect_one_y + 10
 
     # interates over arrays and draws rectangle on frame
-    for i in range(total_rectangle):
+    for i in range(size):
         cv2.rectangle(frame, (hand_rect_one_y[i], hand_rect_one_x[i]),
                       (hand_rect_two_y[i], hand_rect_two_x[i]),
                       (0, 255, 0), 1)
@@ -99,6 +75,28 @@ def hist_masking(frame, hist):
 
     res = cv2.bitwise_and(frame, thresh)
     return res
+
+
+def contours(hist_mask_image):
+    gray = cv2.cvtColor(hist_mask_image, cv2.COLOR_BGR2GRAY)
+    ret, thresh = cv2.threshold(gray, 0, 255, 0)
+    _, cont, hierarchy = cv2.findContours(
+        thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    return cont
+
+
+def max_contour(contour_list, frame):
+    max_i = 0
+    max_area = 0
+
+    for i in range(len(contour_list)):
+        cnt = contour_list[i]
+        area = cv2.contourArea(cnt)
+        if area > max_area:
+            max_area = area
+            max_i = i
+
+    return contour_list[max_i]
 
 
 def centroid(max_contour):
