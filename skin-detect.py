@@ -130,16 +130,24 @@ def farthest_point(defects, contour, centroid):
         else:
             return None
 
-def manage_image_opr(frame, hand_hist):
+def manipulate(frame, hand_hist):
+    # mask image with skin hsv
     hist_mask_image = hist_masking(frame, hand_hist)
+    # find all contours
     contour_list = contours(hist_mask_image)
+    # find max contour
     max_cont, max_cont_i = max_contour(contour_list, frame)
     cv2.drawContours(frame, contour_list, max_cont_i, [0, 0, 255], 4)
 
-    # fitting an ellipse / rectangle
-    #ellipse = cv2.fitEllipse(max_cont)
-    #cv2.ellipse(frame, ellipse, (0, 255, 0),2)
+    # convert contour to 2d coordinate
+    c = np.array(max_cont)
+    x = c.squeeze()[:, 0]
+    y = c.squeeze()[:, 1]
+    print(x, y)
+
+    # fiiting in a shape
     
+
     for c in max_cont:
         M = cv2.moments(c)
         if M['m00'] != 0:
@@ -167,7 +175,7 @@ def main():
 
         if is_hand_hist_created:
             #frame = hist_masking(frame, hand_hist)
-            frame = manage_image_opr(frame, hand_hist)
+            frame = manipulate(frame, hand_hist)
 
         else:
             frame = draw_rect(frame)

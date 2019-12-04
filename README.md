@@ -1,6 +1,6 @@
 # Project Useful Links
 
-## OpenCV
+## Detection and Tracking with OpenCV
 
 * videoio module: <https://docs.opencv.org/master/df/d2c/tutorial_table_of_content_videoio.html>
 
@@ -44,7 +44,7 @@
 
 * Possible resolution for OpenCV: <https://stackoverflow.com/questions/19448078/python-opencv-access-webcam-maximum-resolution>
 
-## OpenPose
+## Detection with OpenPose
 
 * Documents: <https://github.com/CMU-Perceptual-Computing-Lab/openpose> (including installation)
 
