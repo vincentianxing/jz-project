@@ -1,4 +1,11 @@
-# Project Useful Links
+# Project Overview and Useful Links
+
+## How to use
+
+* Select tracking mode:
+  * csrt: select tracking region and press 's'
+  * Background Subtraction: choose static background
+  * Skin detection: place your hand at sample taking region and press 'z'
 
 ## Detection and Tracking with OpenCV
 
