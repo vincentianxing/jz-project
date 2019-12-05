@@ -235,7 +235,7 @@ while True:
                             cv2.line(frame, (circleX + 40, circleY - 10), (circleX + 40, circleY + 10), (0, 0, 255), 4)   
                 
                     #the right boss
-                    if (xTimer % 120) == 0:
+                    if (xTimer % 80) == 0:
                         dRight = 0
                     # south bullet
                     cv2.circle(frame, (750,120 + dRight * 8), 20, (0, 0, 0), -1)
@@ -259,9 +259,9 @@ while True:
                         cv2.line(frame, (circleX + 25, circleY), (circleX + 35, circleY), (0, 0, 255), 4)
                         cv2.line(frame, (circleX + 40, circleY - 10), (circleX + 40, circleY + 10), (0, 0, 255), 4)  
                     # west bullet
-                    cv2.circle(frame, (750 - dRight * 8, 120), 20, (0, 0, 0), -1)
-                    cv2.circle(frame, (750 - dRight * 8, 120), 15, (255, 255, 255), -1)
-                    if (circleX - 750 - dRight * 8) * (circleX - 750 - dRight * 8) + (circleY - 120) * (circleY - 120) < 625:
+                    cv2.circle(frame, (750 - dRight * 9, 120), 20, (0, 0, 0), -1)
+                    cv2.circle(frame, (750 - dRight * 9, 120), 15, (255, 255, 255), -1)
+                    if (circleX - 750 - dRight * 9) * (circleX - 750 - dRight * 9) + (circleY - 120) * (circleY - 120) < 625:
                         count -= 1
                         cv2.line(frame, (circleX + 25, circleY), (circleX + 35, circleY), (0, 0, 255), 4)
                         cv2.line(frame, (circleX + 40, circleY - 10), (circleX + 40, circleY + 10), (0, 0, 255), 4)  
