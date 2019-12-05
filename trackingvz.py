@@ -139,11 +139,15 @@ def manipulate(frame, hand_hist):
     max_cont, max_cont_i = max_contour(contour_list, frame)
     cv2.drawContours(frame, contour_list, max_cont_i, [0, 0, 255], 4)
 
-    # convert contour to 2d coordinate
-    c = np.array(max_cont)
-    x = c.squeeze()[:, 0]
-    y = c.squeeze()[:, 1]
-    print(x, y)
+    # convert contour to 2d coordinates
+    c = np.array(max_cont).squeeze()
+    #x = c.squeeze()[:, 0]
+    #y = c.squeeze()[:, 1]
+
+    for value in np.ndenumerate(c):
+        x = value[0][0]
+        y = value[1]
+        print (x, y)
 
     # fiiting in a shape TODO
 
