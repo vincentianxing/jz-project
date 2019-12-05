@@ -410,6 +410,7 @@ while True:
                 circleY = circleY - 5 + dvelocity
                 dvelocity += 1
 
+
     key = cv2.waitKey(1) & 0xFF
 
     # if 's', select a bounding box to track
