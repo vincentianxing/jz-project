@@ -15,6 +15,7 @@ hand_rect_one_y = None
 hand_rect_two_x = None
 hand_rect_two_y = None
 traverse_point = []
+k = True
 
 # parsing arguments
 ap = argparse.ArgumentParser()
@@ -415,6 +416,7 @@ while True:
 
     # if 's', select a bounding box to track
     if key == ord("s"):
+        k = False
         # select the box of object you want to track, then press ENTER / SPACE
         initBB = cv2.selectROI("Frame", frame, fromCenter=False,
                                showCrosshair=True)
@@ -429,7 +431,7 @@ while True:
         hand_hist = track.hand_histogram(frame)
 
     if is_hand_hist_created:
-        if key != ord("s"):
+        if k:
             frame = track.manipulate(frame, hand_hist)
 
     else:

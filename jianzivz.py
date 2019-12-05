@@ -19,6 +19,7 @@ hand_rect_one_y = None
 hand_rect_two_x = None
 hand_rect_two_y = None
 traverse_point = []
+k = True
 
 # parsing arguments
 ap = argparse.ArgumentParser()
@@ -212,6 +213,7 @@ while True:
 
     # if 's', select a bounding box to track
     if key == ord("r"):
+        k = False
         # select the box of object you want to track, then press ENTER / SPACE
         initBB = cv2.selectROI("frame", frame, fromCenter=False,
                                showCrosshair=True)
@@ -226,7 +228,7 @@ while True:
         hand_hist = track.hand_histogram(frame)
 
     if is_hand_hist_created:
-        if key != ord("r"):
+        if k:
             frame = track.manipulate(frame, hand_hist)
 
     else:
@@ -240,6 +242,7 @@ while True:
     screen.fill([0, 0, 0])
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     frame = frame.swapaxes(0, 1)
+    
     # input frame to pygame screen
     frame = pygame.surfarray.make_surface(frame)
     screen.blit(frame, (0, 0))
