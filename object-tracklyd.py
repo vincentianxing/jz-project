@@ -50,8 +50,14 @@ circleY =  0
 
 # down: 0 up: 1 left: 2 right: 3
 direction = 0
+
+# determine the previous direction
 prevdir = 0
+
+# deal with the accelaration
 dvelocity = 0
+
+# change the "phenotype" of jianzi if necessary
 changeMode = 0
 
 # loop over frames from stream
@@ -77,41 +83,44 @@ while True:
             (x, y, w, h) = [int(v) for v in box]
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-            if circleY > 500:
+            # Game over
+            if circleY > 600:
                 break
             
+            #when the tracked zone hits the jianzi
             if circleX > x and circleX < x + w and circleY > y and circleY < y + h: 
+                #determine the direction and reset the acceleration.
                 if (circleX - x) < (x + w - circleX):
                     if (circleY - y) < (y + h - circleY):
                         direction = 2
                         dvelocity = 0
-                        #circleX = x
                     else:
                         direction = 0
                         dvelocity = 0
-                        #circleX = x
                 else:
                     if (circleY - y) < (y + h - circleY):
                         direction = 3
                         dvelocity = 0
-                        #circleX = x+w
                     else:
                         direction = 0
                         dvelocity = 0
-                        #circleX = x+w
                 changeMode = 1
-
+            # hit the upper bound
             if circleY <= 5:
                 prevdir = direction
                 direction = 0
+            # hit the left bound and rebounce
             if circleX <= 5:
                 prevdir = direction
                 direction = 3
                 changeMode = 1
+            # hit the right bound and rebounce
             if circleX >= 995:
                 prevdir = direction
                 direction = 2
                 changeMode = 1
+
+            # What a jianzi looks like when not hitting boundaries
             cv2.circle(frame, (circleX,circleY), 5, (255, 0, 0), 10)
             cv2.rectangle(frame, (circleX - 5, circleY - 35), (circleX + 5, circleY), (0, 0, 255), 10)
             cv2.rectangle(frame, (circleX - 7, circleY - 50), (circleX - 5, circleY - 35), (0, 255, 255), 2)
@@ -123,7 +132,10 @@ while True:
             cv2.circle(frame, (circleX, circleY - 17), 3, (0, 0, 255), 6)
             cv2.line(frame, (circleX - 8, circleY - 15), (circleX - 38, circleY - 35), (0,125,125), 3)
             cv2.line(frame, (circleX + 8, circleY - 15), (circleX + 38, circleY - 35), (0,125,125), 3)
+            
+            # where the appearance of jianzi changes randomly
             if (changeMode == 1):
+                # change it back
                 changeMode = 0
                 cv2.circle(frame, (circleX,circleY), 5, (random.randrange(1, 255), random.randrange(1, 255), random.randrange(1, 255)), 10)
                 cv2.rectangle(frame, (circleX - 5, circleY - 35), (circleX + 5, circleY), (random.randrange(1, 255),0,random.randrange(1, 255)), 10)
@@ -136,6 +148,8 @@ while True:
                 cv2.circle(frame, (circleX, circleY - 17), 3, (0, 0, 255), 6)
                 cv2.line(frame, (circleX - 8, circleY - 15), (circleX - random.randrange(25, 40), circleY - random.randrange(1, 40)), (random.randrange(1, 255),random.randrange(1, 255),random.randrange(1, 255)), 2)
                 cv2.line(frame, (circleX + 8, circleY - 15), (circleX + random.randrange(25, 40), circleY - random.randrange(1, 40)), (random.randrange(1, 255),random.randrange(1, 255),random.randrange(1, 255)), 2)
+            
+            #speed up when falling
             if direction == 0:
                 if prevdir == 2:
                     circleY = circleY + 5 + dvelocity
@@ -148,6 +162,7 @@ while True:
                 else:
                     circleY = circleY + 5 + dvelocity
                     dvelocity += 1
+            #slow down when rising
             elif direction == 2:
                 circleX = circleX - 2
                 circleY = circleY - 5 + dvelocity
