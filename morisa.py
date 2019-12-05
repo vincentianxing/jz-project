@@ -85,6 +85,9 @@ dBossY = -1
 middleX = -1
 middleY = -1
 
+# set the right boss's bullets' trajectory
+dRight = 0
+
 # loop over frames from stream
 while True:
     # grab the current frame, then handle
@@ -178,7 +181,7 @@ while True:
                 timer = 0
             
             # median stage
-            if xTimer >= 400:
+            if xTimer >= 400 and xTimer < 1000:
                 #Middle
                 cv2.circle(frame, (bossX,bossY), 50, (128, 234, 67), -1)
                 cv2.line(frame, (bossX - 10, bossY - 25), (bossX - 30, bossY - 45), (0, 0, 0), 8)
@@ -226,13 +229,72 @@ while True:
                         bossX += dBossX
                         bossY += dBossY
                         #check if it hits the player
-                        if (circleX - bossX) * (circleX - bossX) + (circleY - bossY) * (circleY - bossY) < 2500:
+                        if (circleX - bossX) * (circleX - bossX) + (circleY - bossY) * (circleY - bossY) < 3100:
                             count -= 1
                             cv2.line(frame, (circleX + 25, circleY), (circleX + 35, circleY), (0, 0, 255), 4)
                             cv2.line(frame, (circleX + 40, circleY - 10), (circleX + 40, circleY + 10), (0, 0, 255), 4)   
                 
+                    #the right boss
+                    if (xTimer % 120) == 0:
+                        dRight = 0
+                    # south bullet
+                    cv2.circle(frame, (750,120 + dRight * 8), 20, (0, 0, 0), -1)
+                    cv2.circle(frame, (750,120 + dRight * 8), 15, (255, 255, 255), -1)
+                    if (circleX - 750) * (circleX - 750) + (circleY - 120 - dRight * 8) * (circleY - 120 - dRight * 8) < 625:
+                        count -= 1
+                        cv2.line(frame, (circleX + 25, circleY), (circleX + 35, circleY), (0, 0, 255), 4)
+                        cv2.line(frame, (circleX + 40, circleY - 10), (circleX + 40, circleY + 10), (0, 0, 255), 4)  
+                    # southeast bullet
+                    cv2.circle(frame, (750 + dRight * 6, 120 + dRight * 6), 20, (0, 0, 0), -1)
+                    cv2.circle(frame, (750 + dRight * 6, 120 + dRight * 6), 15, (255, 255, 255), -1)
+                    if (circleX - 750 - dRight * 6) * (circleX - 750 - dRight * 6) + (circleY - 120 - dRight * 6) * (circleY - 120 - dRight * 6) < 625:
+                        count -= 1
+                        cv2.line(frame, (circleX + 25, circleY), (circleX + 35, circleY), (0, 0, 255), 4)
+                        cv2.line(frame, (circleX + 40, circleY - 10), (circleX + 40, circleY + 10), (0, 0, 255), 4)  
+                    # southwest bullet
+                    cv2.circle(frame, (750 - dRight * 6, 120 + dRight * 6), 20, (0, 0, 0), -1)
+                    cv2.circle(frame, (750 - dRight * 6, 120 + dRight * 6), 15, (255, 255, 255), -1)
+                    if (circleX - 750 + dRight * 6) * (circleX - 750 + dRight * 6) + (circleY - 120 - dRight * 6) * (circleY - 120 - dRight * 6) < 625:
+                        count -= 1
+                        cv2.line(frame, (circleX + 25, circleY), (circleX + 35, circleY), (0, 0, 255), 4)
+                        cv2.line(frame, (circleX + 40, circleY - 10), (circleX + 40, circleY + 10), (0, 0, 255), 4)  
+                    # west bullet
+                    cv2.circle(frame, (750 - dRight * 8, 120), 20, (0, 0, 0), -1)
+                    cv2.circle(frame, (750 - dRight * 8, 120), 15, (255, 255, 255), -1)
+                    if (circleX - 750 - dRight * 8) * (circleX - 750 - dRight * 8) + (circleY - 120) * (circleY - 120) < 625:
+                        count -= 1
+                        cv2.line(frame, (circleX + 25, circleY), (circleX + 35, circleY), (0, 0, 255), 4)
+                        cv2.line(frame, (circleX + 40, circleY - 10), (circleX + 40, circleY + 10), (0, 0, 255), 4)  
+
+            if xTimer >= 1000:
+                #Middle
+                cv2.circle(frame, (500,100), 50, (128, 234, 67), -1)
+                cv2.line(frame, (490, 75), (470, 55), (0, 0, 0), 8)
+                cv2.line(frame, (510, 75), (530, 55), (0, 0, 0), 8)
+                cv2.line(frame, (490, 55), (470, 75), (0, 0, 0), 8)
+                cv2.line(frame, (510, 55), (530, 75), (0, 0, 0), 8)
+                cv2.line(frame, (475,120), (525,120), (0, 0, 0), 8)
+                #Left
+                cv2.circle(frame, (250,100), 50, (97, 128, 234), -1)
+                cv2.line(frame, (240, 75), (220, 55), (0, 0, 0), 8)
+                cv2.line(frame, (260, 75), (280, 55), (0, 0, 0), 8)
+                cv2.line(frame, (240, 55), (220, 75), (0, 0, 0), 8)
+                cv2.line(frame, (260, 55), (280, 75), (0, 0, 0), 8)
+                cv2.line(frame, (225, 120), (275, 120), (0, 0, 0), 8)
+                #Right
+                cv2.circle(frame, (750,100), 50, (203, 35, 150), -1)
+                cv2.line(frame, (740, 75), (720, 55), (0, 0, 0), 8)
+                cv2.line(frame, (760, 75), (780, 55), (0, 0, 0), 8)
+                cv2.line(frame, (740, 55), (720, 75), (0, 0, 0), 8)
+                cv2.line(frame, (760, 55), (780, 75), (0, 0, 0), 8)
+                cv2.line(frame, (725, 120), (775, 120), (0, 0, 0), 8)
+
+            if xTimer == 1200:
+                xTimer = 200
             #update xTimer
             xTimer += 1
+            #update right boss's timer
+            dRight += 1
 
             # draw the "feet"
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
