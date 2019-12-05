@@ -145,8 +145,7 @@ def manipulate(frame, hand_hist):
     y = c.squeeze()[:, 1]
     print(x, y)
 
-    # fiiting in a shape
-    
+    # fiiting in a shape TODO
 
     for c in max_cont:
         M = cv2.moments(c)
@@ -163,10 +162,19 @@ def main():
     global hand_hist
     is_hand_hist_created = False
     capture = cv2.VideoCapture(0)
+    # generate background subtraction mask
+    backsub = cv2.createBackgroundSubtractorMOG2()
 
     while capture.isOpened():
         pressed_key = cv2.waitKey(1)
-        _, frame = capture.read()
+
+        # read a frame from webcam
+        ret, frame = capture.read()
+
+        # background subtraction
+        fgmask = backsub.apply(frame)
+        rgbmask = cv2.cvtColor(fgmask, cv2.COLOR_GRAY2BGR)
+        rgbframe = frame & rgbmask
 
         # press 'z' to take sample
         if pressed_key & 0xFF == ord('z'):
@@ -174,8 +182,9 @@ def main():
             hand_hist = hand_histogram(frame)
 
         if is_hand_hist_created:
-            #frame = hist_masking(frame, hand_hist)
             frame = manipulate(frame, hand_hist)
+            # tracking with background removed
+            # frame = manipulate(rgbframe, hand_hist) TODO
 
         else:
             frame = draw_rect(frame)
