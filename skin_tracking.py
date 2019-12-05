@@ -80,7 +80,7 @@ def contours(hist_mask_image):
     gray = cv2.cvtColor(hist_mask_image, cv2.COLOR_BGR2GRAY)
     ret, thresh = cv2.threshold(gray, 0, 255, 0)
     # return a tree structure of contours
-    _, cont, hierarchy = cv2.findContours(
+    cont, hierarchy = cv2.findContours(
         thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     return cont
 
@@ -188,7 +188,7 @@ def main():
         if is_hand_hist_created:
             frame = manipulate(frame, hand_hist)
             # tracking with background removed
-            # frame = manipulate(rgbframe, hand_hist)
+            frame = manipulate(rgbframe, hand_hist)
 
         else:
             frame = draw_rect(frame)
