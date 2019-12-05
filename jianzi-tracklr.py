@@ -92,7 +92,7 @@ def ball_init():
     ball_x = int(random.randrange(1, WIDTH + 1 - rec.width))
     # ball_pos = [ball_x, img_radius + 1]
     rec.left = ball_x
-    rec.top = 1
+    rec.centery = 1
     horz = int(random.randrange(1,4))
     vert = 0
     
@@ -124,7 +124,7 @@ def draw(canvas, x, y, w, h):
     screen.blit(image, rec.center)
 
     #ball collision check on top and bottom walls
-    if int(rec.top) <= img_radius:
+    if int(rec.centery) <= 0.5:
         ball_vel[1] = - ball_vel[1]
     if int(rec.left) <= img_radius:
         ball_vel[0] = -ball_vel[0]
