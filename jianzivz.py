@@ -20,6 +20,8 @@ hand_rect_two_x = None
 hand_rect_two_y = None
 traverse_point = []
 k = True
+max_cnt = None
+
 
 # parsing arguments
 ap = argparse.ArgumentParser()
@@ -65,14 +67,15 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 
 #globals
-WIDTH = 600
-HEIGHT = 400
+WIDTH = 800
+HEIGHT = 600
 # img_radius = 70
 PAD_WIDTH = 8
 PAD_HEIGHT = 80
 # ball_pos = [0,0]
 ball_vel = [0, 0]
 score = 0
+dist = -1
 
 #canvas declaration
 camera = cv2.VideoCapture(0)
@@ -107,8 +110,8 @@ def init():
     ball_init()
 
 
-def draw(canvas, x, y, w, h):
-    global ball_pos, ball_vel, score
+def draw(canvas, cnt, x, y, w, h):
+    global ball_pos, ball_vel, score, dist
 
     #update ball
     ball_vel[1] += 0.981
@@ -158,6 +161,20 @@ def draw(canvas, x, y, w, h):
     #             score += 1
     #             ball_vel[0] = -ball_vel[0]
 
+    if cnt is not None:
+        dist = cv2.pointPolygonTest(cnt, rec.center, True)
+    
+    if dist >= 0 :
+        score += 1
+        ball_vel[1] = -ball_vel[1]
+        vel_x = random.choice((-1, 1))
+        if abs(ball_vel[1]) >= 24.0:
+            vel_y = random.uniform(0.8, 0.9)
+        else:
+            vel_y = random.uniform(1, 1.2)
+        ball_vel[0] *= vel_x
+        ball_vel[1] *= vel_y
+
     if int(rec.centery) >= HEIGHT + 1 - img_radius:
         ball_init()
 
@@ -182,7 +199,7 @@ while True:
         break
 
     # resize the frame and grab the frame dimensions TODO
-    frame = imutils.resize(frame, width=600)
+    frame = imutils.resize(frame, width=800)
     (H, W) = frame.shape[:2]
 
     # update the background model for mask
@@ -229,12 +246,12 @@ while True:
 
     if is_hand_hist_created:
         if k:
-            frame = track.manipulate(frame, hand_hist)
+            frame, max_cnt = track.manipulate(frame, hand_hist)
 
     else:
         frame = track.draw_rect(frame)
 
-    cv2.imshow("Frame", frame)
+    cv2.imshow("Frame",frame)
 
     if key == ord("q"):
         break
@@ -246,7 +263,7 @@ while True:
     # input frame to pygame screen
     frame = pygame.surfarray.make_surface(frame)
     screen.blit(frame, (0, 0))
-    draw(screen, x, y, w, h)
+    draw(screen, max_cnt, x, y, w, h)
 
     pygame.display.update()
 

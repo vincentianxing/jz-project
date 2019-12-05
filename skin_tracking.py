@@ -160,7 +160,7 @@ def manipulate(frame, hand_hist):
 
     cnt_centroid = centroid(max_cont)
     cv2.circle(frame, cnt_centroid, 5, [255, 0, 255], -1)
-    return frame
+    return frame, max_cont
 
 def main():
     global hand_hist
