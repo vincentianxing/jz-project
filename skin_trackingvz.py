@@ -188,7 +188,7 @@ def main():
         if is_hand_hist_created:
             frame = manipulate(frame, hand_hist)
             # tracking with background removed
-            # frame = manipulate(rgbframe, hand_hist) TODO
+            # frame = manipulate(rgbframe, hand_hist)
 
         else:
             frame = draw_rect(frame)
