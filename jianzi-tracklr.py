@@ -70,17 +70,12 @@ RED = (255,0,0)
 #globals
 WIDTH = 600
 HEIGHT = 400      
-image_radius = 70
+# img_radius = 70
 PAD_WIDTH = 8
 PAD_HEIGHT = 80
-HALF_PAD_WIDTH = PAD_WIDTH / 2
-HALF_PAD_HEIGHT = PAD_HEIGHT / 2
-ball_pos = [0,0]
+# ball_pos = [0,0]
 ball_vel = [0,0]
-#paddle_vel = 0
-#paddle2_vel = 0
 score = 0
-#r_score = 0
 
 #canvas declaration
 camera = cv2.VideoCapture(0)
@@ -88,11 +83,16 @@ pygame.init()
 pygame.display.set_caption("Play Balls!")
 screen = pygame.display.set_mode([WIDTH,HEIGHT])
 image = pygame.image.load('jianzi.png')
+rec = image.get_rect()
+img_radius = int(rec.width/2)
 
 def ball_init():
     global ball_pos, ball_vel, ball_x # these are vectors stored as lists
-    ball_x = int(random.randrange(0, WIDTH - image_radius))
-    ball_pos = [ball_x, image_radius + 1]
+    # ball_x = int(random.randrange(0, WIDTH - img_radius))
+    ball_x = int(random.randrange(1, WIDTH + 1 - rec.width))
+    # ball_pos = [ball_x, img_radius + 1]
+    rec.left = ball_x
+    rec.top = 1
     horz = int(random.randrange(1,4))
     vert = 0
     
@@ -108,45 +108,59 @@ def init():
 
 def draw(canvas, x, y, w, h):
     global ball_pos, ball_vel, score
-
-    #pygame.draw.line(canvas, WHITE, [0, HEIGHT + 1 - PAD_WIDTH],[WIDTH, HEIGHT + 1 - PAD_WIDTH], 1)
-
-    ball_vel[1] += 0.981
+    
     #update ball
-    ball_pos[0] += int(ball_vel[0])
-    ball_pos[1] += int(ball_vel[1])
+    ball_vel[1] += 0.981
+
+    if ball_vel[0] > 0 :
+        ball_vel[0] = int(random.randrange(1,4))
+    else :
+        ball_vel[0] = int(random.randrange(-4,-1))
+    rec.centerx += int(ball_vel[0])
+    rec.centery += int(ball_vel[1])
 
     #draw ball
     #pygame.draw.circle(canvas, RED, ball_pos, 20, 0)
-    screen.blit(image, ball_pos)
+    screen.blit(image, rec.center)
 
     #ball collision check on top and bottom walls
-    if int(ball_pos[1]) <= image_radius:
+    if int(rec.top) <= img_radius:
         ball_vel[1] = - ball_vel[1]
-    if int(ball_pos[0]) <= image_radius:
+    if int(rec.left) <= img_radius:
         ball_vel[0] = -ball_vel[0]
-    if int(ball_pos[0]) >= WIDTH + 1 - image_radius:
+    if int(rec.right) >= WIDTH - img_radius:
         ball_vel[0] = -ball_vel[0]
     
-    if int(ball_pos[1]) in range(y - image_radius, y + h - image_radius) and int(ball_pos[0]) in range(x - image_radius, x + w + image_radius):
+    # if int(rec.centery) in range(y - img_radius, y + h - img_radius) and int(rec.centerx) in range(x - img_radius, x + w + img_radius):
+    #     score += 1
+    #     ball_vel[1] = -ball_vel[1]
+    #     ball_vel[0] *= 0.5
+    #     ball_vel[1] *= 1.0
+    
+    if int(rec.bottom) in range(y - img_radius, y) and int(rec.centerx) in range(x - img_radius, x + w + img_radius):
         score += 1
         ball_vel[1] = -ball_vel[1]
-        ball_vel[0] *= 0.5
-        ball_vel[1] *= 1.0
+        vel_x = random.choice((-1, 1))
+        if abs(ball_vel[1]) >= 24.0:
+            vel_y = random.uniform(0.8, 0.9)
+        else:
+            vel_y = random.uniform(1, 1.2)   
+        ball_vel[0] *= vel_x
+        ball_vel[1] *= vel_y
 
-    # if int(ball_pos[1]) >= y - image_radius:
-    #     if int(ball_pos[1]) <= y + h - 1 - image_radius:
-    #         if int(ball_pos[0]) == x - image_radius:
+    # if int(ball_pos[1]) >= y - img_radius:
+    #     if int(ball_pos[1]) <= y + h - 1 - img_radius:
+    #         if int(ball_pos[0]) == x - img_radius:
     #             score += 1
     #             ball_vel[0] = -ball_vel[0]
-    #         elif int(ball_pos[0]) == x + w - 1 - image_radius:
+    #         elif int(ball_pos[0]) == x + w - 1 - img_radius:
     #             score += 1
     #             ball_vel[0] = -ball_vel[0]
                     
 
 
 
-    if int(ball_pos[1]) >= HEIGHT + 1 - image_radius:
+    if int(rec.centery) >= HEIGHT + 1 - img_radius:
         ball_init()
 
     #update scores

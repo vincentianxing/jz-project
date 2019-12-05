@@ -126,7 +126,7 @@ def draw(canvas, x, y, w, h):
     if int(ball_pos[0]) >= WIDTH + 1 - BALL_RADIUS:
         ball_vel[0] = -ball_vel[0]
     
-    if int(ball_pos[1]) in range(y - BALL_RADIUS, y + h - BALL_RADIUS) and int(ball_pos[0]) in range(x - BALL_RADIUS, x + w + BALL_RADIUS):
+    if int(ball_pos[1]) in range(y - BALL_RADIUS, y) and int(ball_pos[0]) in range(x - BALL_RADIUS, x + w + BALL_RADIUS):
         score += 1
         ball_vel[1] = -ball_vel[1]
         #ball_vel[0] *= 1.1

@@ -24,6 +24,8 @@ camera = cv2.VideoCapture(0)
 pygame.init()
 pygame.display.set_caption("Play Balls!")
 screen = pygame.display.set_mode([WIDTH,HEIGHT])
+image = pygame.image.load('jianzi.png')
+print(image.get_rect().size)
 
 def ball_init():
     global ball_pos, ball_vel # these are vectors stored as lists
