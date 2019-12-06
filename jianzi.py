@@ -23,6 +23,22 @@ traverse_point = []
 k = True
 max_cnt = None
 
+# initialize size and global variables for ball
+WIDTH = 800
+HEIGHT = 600
+ball_vel = [0, 0]
+ball_x = 0
+score = 0
+dist = -1
+rec = None
+image = None
+img_radius = 0
+
+# initialize screen and bounding box coordinates
+initBB = None
+screen = None
+
+
 # parsing arguments
 ap = argparse.ArgumentParser()
 ap.add_argument('--input', type=str,
@@ -43,9 +59,6 @@ OPENCV_OBJECT_TRACKERS = {
 }
 tracker = OPENCV_OBJECT_TRACKERS[args["tracker"]]()
 
-# initialize bounding box coordinates
-initBB = None
-
 # grab reference to webcam if no video given
 if not args.get("video", False):
     print("starting video stream...")
@@ -53,18 +66,6 @@ if not args.get("video", False):
     time.sleep(1.0)
 else:
     vs = cv2.VideoCapture(args["video"])
-
-# initialize size and global variables for ball
-WIDTH = 800
-HEIGHT = 600
-ball_vel = [0, 0]
-ball_x = 0
-score = 0
-dist = -1
-rec = None
-screen = None
-image = None
-img_radius = 0
 
 # declare pygame canvas
 def screen_init():
@@ -125,7 +126,7 @@ def draw(canvas, cnt, x, y, w, h):
     # collision check on top and bottom walls
     if int(rec.centery) <= 0.5:
         ball_vel[1] = - ball_vel[1]
-    if int(rec.left) <= img_radius:
+    if int(rec.left) <= 0.5:
         ball_vel[0] = -ball_vel[0]
     if int(rec.right) >= WIDTH - img_radius:
         ball_vel[0] = -ball_vel[0]
@@ -136,7 +137,7 @@ def draw(canvas, cnt, x, y, w, h):
 
     # check collision with contour
     if cnt is not None:
-        dist = cv2.pointPolygonTest(cnt, rec.center, True)
+        dist = cv2.pointPolygonTest(cnt, (rec.centerx, rec.top), True)
     
     if dist >= 0 :
         update()
