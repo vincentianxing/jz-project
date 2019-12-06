@@ -18,17 +18,10 @@ ap.add_argument("-t", "--tracker", type=str, default="kcf",
                 help="OpenCV object tracker type")
 args = vars(ap.parse_args())
 
-
 # call appropriate object tracker constructor
 # intialize dict for tracker
 OPENCV_OBJECT_TRACKERS = {
-    "csrt": cv2.TrackerCSRT_create,
     "kcf": cv2.TrackerKCF_create,
-    "boosting": cv2.TrackerBoosting_create,
-    "mil": cv2.TrackerMIL_create,
-    "tld": cv2.TrackerTLD_create,
-    "medianflow": cv2.TrackerMedianFlow_create,
-    "mosse": cv2.TrackerMOSSE_create
 }
 # grab object tracker using dict
 tracker = OPENCV_OBJECT_TRACKERS[args["tracker"]]()
@@ -43,8 +36,6 @@ if not args.get("video", False):
     time.sleep(1.0)
 else:
     vs = cv2.VideoCapture(args["video"])
-# initialize FPS throughput estimator
-fps = None
 circleX = 500
 circleY =  0
 
@@ -98,7 +89,7 @@ while True:
     if frame is None:
         break
     # resize the frame and grab the frame dimensions TODO
-    frame = imutils.resize(frame, width=1000)
+    frame = imutils.resize(frame, width=800)
     (H, W) = frame.shape[:2]
 
     # check if is tracking an object
@@ -174,7 +165,7 @@ while True:
                 if circleX >= (location - (timer - 98) * 5) and circleX <= (location + (timer - 98) * 5):
                     count -= 1
                     cv2.line(frame, (circleX + 25, circleY), (circleX + 35, circleY), (0, 0, 255), 4)
-                    cv2.line(frame, (circleX + 40, circleY - 10), (circleX + 40, circleY + 10), (0, 0, 255), 4)
+                    cv2.line(frame, (circleX + 20, circleY - 10), (circleX + 20, circleY + 10), (0, 0, 255), 4)
 
             # reset the timer
             if timer >= 160:
@@ -217,7 +208,7 @@ while True:
                         if leftLocal < circleY + 8 and leftLocal > circleY - 20:
                             count -= 1
                             cv2.line(frame, (circleX + 25, circleY), (circleX + 35, circleY), (0, 0, 255), 4)
-                            cv2.line(frame, (circleX + 40, circleY - 10), (circleX + 40, circleY + 10), (0, 0, 255), 4)
+                            cv2.line(frame, (circleX + 20, circleY - 10), (circleX + 20, circleY + 10), (0, 0, 255), 4)
                     
                     #the middle boss's tracking point
                     if (xTimer % 160) == 0:
@@ -232,7 +223,7 @@ while True:
                         if (circleX - bossX) * (circleX - bossX) + (circleY - bossY) * (circleY - bossY) < 3100:
                             count -= 1
                             cv2.line(frame, (circleX + 25, circleY), (circleX + 35, circleY), (0, 0, 255), 4)
-                            cv2.line(frame, (circleX + 40, circleY - 10), (circleX + 40, circleY + 10), (0, 0, 255), 4)   
+                            cv2.line(frame, (circleX + 20, circleY - 10), (circleX + 20, circleY + 10), (0, 0, 255), 4)   
                 
                     #the right boss
                     if (xTimer % 80) == 0:
@@ -243,28 +234,28 @@ while True:
                     if (circleX - 750) * (circleX - 750) + (circleY - 120 - dRight * 8) * (circleY - 120 - dRight * 8) < 625:
                         count -= 1
                         cv2.line(frame, (circleX + 25, circleY), (circleX + 35, circleY), (0, 0, 255), 4)
-                        cv2.line(frame, (circleX + 40, circleY - 10), (circleX + 40, circleY + 10), (0, 0, 255), 4)  
+                        cv2.line(frame, (circleX + 20, circleY - 10), (circleX + 20, circleY + 10), (0, 0, 255), 4)  
                     # southeast bullet
                     cv2.circle(frame, (750 + dRight * 6, 120 + dRight * 6), 20, (0, 0, 0), -1)
                     cv2.circle(frame, (750 + dRight * 6, 120 + dRight * 6), 15, (255, 255, 255), -1)
                     if (circleX - 750 - dRight * 6) * (circleX - 750 - dRight * 6) + (circleY - 120 - dRight * 6) * (circleY - 120 - dRight * 6) < 625:
                         count -= 1
                         cv2.line(frame, (circleX + 25, circleY), (circleX + 35, circleY), (0, 0, 255), 4)
-                        cv2.line(frame, (circleX + 40, circleY - 10), (circleX + 40, circleY + 10), (0, 0, 255), 4)  
+                        cv2.line(frame, (circleX + 20, circleY - 10), (circleX + 20, circleY + 10), (0, 0, 255), 4)  
                     # southwest bullet
                     cv2.circle(frame, (750 - dRight * 6, 120 + dRight * 6), 20, (0, 0, 0), -1)
                     cv2.circle(frame, (750 - dRight * 6, 120 + dRight * 6), 15, (255, 255, 255), -1)
                     if (circleX - 750 + dRight * 6) * (circleX - 750 + dRight * 6) + (circleY - 120 - dRight * 6) * (circleY - 120 - dRight * 6) < 625:
                         count -= 1
                         cv2.line(frame, (circleX + 25, circleY), (circleX + 35, circleY), (0, 0, 255), 4)
-                        cv2.line(frame, (circleX + 40, circleY - 10), (circleX + 40, circleY + 10), (0, 0, 255), 4)  
+                        cv2.line(frame, (circleX + 20, circleY - 10), (circleX + 20, circleY + 10), (0, 0, 255), 4)  
                     # west bullet
                     cv2.circle(frame, (750 - dRight * 9, 120), 20, (0, 0, 0), -1)
                     cv2.circle(frame, (750 - dRight * 9, 120), 15, (255, 255, 255), -1)
                     if (circleX - 750 - dRight * 9) * (circleX - 750 - dRight * 9) + (circleY - 120) * (circleY - 120) < 625:
                         count -= 1
                         cv2.line(frame, (circleX + 25, circleY), (circleX + 35, circleY), (0, 0, 255), 4)
-                        cv2.line(frame, (circleX + 40, circleY - 10), (circleX + 40, circleY + 10), (0, 0, 255), 4)  
+                        cv2.line(frame, (circleX + 20, circleY - 10), (circleX + 20, circleY + 10), (0, 0, 255), 4)  
 
             if xTimer >= 1000:
                 #Middle
@@ -354,26 +345,9 @@ while True:
                 circleY = circleY - 5 + dvelocity
                 dvelocity += 1
 
-        # update FPS counter
-        fps.update()
-        fps.stop()
-
-        # initialize info displayed on frame
-        info = [
-            ("Tracker", args["tracker"]),
-            ("Success", "Yes" if success else "No"),
-            ("FPS", "{:.2f}".format(fps.fps())),
-        ]
-        # loop over the info tuples and draw them on our frame
-        for (i, (k, v)) in enumerate(info):
-            text = "{}: {}".format(k, v)
-            cv2.putText(frame, text, (10, H - ((i * 20) + 20)),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
-        
-        
     # show the output frame
     flip = cv2.flip(frame, +1) # where flip TODO
-    cv2.imshow("Frame", frame)
+    cv2.imshow("Frame", flip)
     key = cv2.waitKey(1) & 0xFF
 
     # if 's', select a bounding box to track
@@ -381,10 +355,8 @@ while True:
         # select the box of object you want to track, then press ENTER / SPACE
         initBB = cv2.selectROI("Frame", frame, fromCenter=False,
                                 showCrosshair=True)
-            
         # start opencv object tracker with supplied box coordinates
         tracker.init(frame, initBB)
-        fps = FPS().start()
         
     elif key == ord("q"):
         break
