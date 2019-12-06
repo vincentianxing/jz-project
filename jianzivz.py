@@ -200,6 +200,7 @@ while True:
     if is_hand_hist_created:
         if k:
             frame = cv2.flip(frame, +1)
+            frame, max_cnt = track.manipulate(frame, hand_hist)
 
     else:
         frame = track.draw_rect(frame)
@@ -222,9 +223,6 @@ while True:
 
     # update info
     pygame.display.update()
-
-    # flip
-    frame = cv2.flip(frame, 0)
 
     # quit
     for event in pygame.event.get():
