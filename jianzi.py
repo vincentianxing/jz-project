@@ -61,15 +61,21 @@ ball_vel = [0, 0]
 ball_x = 0
 score = 0
 dist = -1
+rec = None
+screen = None
+image = None
+img_radius = 0
 
 # declare pygame canvas
-camera = cv2.VideoCapture(0)
-pygame.init()
-pygame.display.set_caption("Play Balls!")
-screen = pygame.display.set_mode([WIDTH, HEIGHT])
-image = pygame.image.load('jianzi.png')
-rec = image.get_rect()
-img_radius = int(rec.width/2)
+def screen_init():
+    global rec, screen, image, img_radius
+    camera = cv2.VideoCapture(0)
+    pygame.init()
+    pygame.display.set_caption("Play Balls!")
+    screen = pygame.display.set_mode([WIDTH, HEIGHT])
+    image = pygame.image.load('jianzi.png')
+    rec = image.get_rect()
+    img_radius = int(rec.width/2)
 
 def ball_init():
     global ball_vel, ball_x  # vectors stored as lists
@@ -85,6 +91,19 @@ def init():
     global score
     score = 0
     ball_init()
+
+def update():
+    global ball_vel, score
+
+    score += 1
+    ball_vel[1] = -ball_vel[1]
+    vel_x = random.choice((-1, 1))
+    if abs(ball_vel[1]) >= 24.0:
+        vel_y = random.uniform(0.8, 0.9)
+    else:
+        vel_y = random.uniform(1, 1.2)
+    ball_vel[0] *= vel_x
+    ball_vel[1] *= vel_y    
 
 # update position of ball
 def draw(canvas, cnt, x, y, w, h):
@@ -112,31 +131,15 @@ def draw(canvas, cnt, x, y, w, h):
         ball_vel[0] = -ball_vel[0]
 
     # check collision within box
-    if int(rec.bottom) in range(y - img_radius, y) and int(rec.centerx) in range(x - img_radius, x + w + img_radius):
-        score += 1
-        ball_vel[1] = -ball_vel[1]
-        vel_x = random.choice((-1, 1))
-        if abs(ball_vel[1]) >= 24.0:
-            vel_y = random.uniform(0.8, 0.9)
-        else:
-            vel_y = random.uniform(1, 1.2)
-        ball_vel[0] *= vel_x
-        ball_vel[1] *= vel_y
+    if int(rec.bottom) in range(y - img_radius, y) and int(rec.right) in range(x - img_radius, x + w + img_radius):
+        update()
 
     # check collision with contour
     if cnt is not None:
         dist = cv2.pointPolygonTest(cnt, rec.center, True)
     
     if dist >= 0 :
-        score += 1
-        ball_vel[1] = -ball_vel[1]
-        vel_x = random.choice((-1, 1))
-        if abs(ball_vel[1]) >= 24.0:
-            vel_y = random.uniform(0.8, 0.9)
-        else:
-            vel_y = random.uniform(1, 1.2)
-        ball_vel[0] *= vel_x
-        ball_vel[1] *= vel_y
+        update()
 
     if int(rec.centery) >= HEIGHT + 1 - img_radius:
         ball_init()
@@ -146,95 +149,102 @@ def draw(canvas, cnt, x, y, w, h):
     label = myfont1.render("Score "+str(score), 1, (255, 255, 0))
     canvas.blit(label, (50, 20))
 
-init()
 
-is_hand_hist_created = False
+def main():
+    global hand_hist, max_cnt, initBB, k
+    screen_init()
+    init()
 
-# loop over frames from stream
-while True:
-    # grab the current frame, then handle
-    frame = vs.read()
-    frame = frame[1] if args.get("video", False) else frame
+    is_hand_hist_created = False
 
-    # check if reached end of stream
-    if frame is None:
-        break
+    # loop over frames from stream
+    while True:
+        # grab the current frame, then handle
+        frame = vs.read()
+        frame = frame[1] if args.get("video", False) else frame
 
-    # resize the frame and grab the frame dimensions
-    frame = imutils.resize(frame, width=800)
-    (H, W) = frame.shape[:2]
+        # check if reached end of stream
+        if frame is None:
+            break
 
-    x = 0
-    y = 0
-    w = 0
-    h = 0
+        # resize the frame and grab the frame dimensions
+        frame = imutils.resize(frame, width=800)
+        (H, W) = frame.shape[:2]
 
-    # check if is tracking an object
-    if initBB is not None:
-        # grab the new bounding box coordinates for object
-        (success, box) = tracker.update(frame)
+        x = 0
+        y = 0
+        w = 0
+        h = 0
 
-        # check if tracking succeed
-        if success:
-            (x, y, w, h) = [int(v) for v in box]
-            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        # check if is tracking an object
+        if initBB is not None:
+            # grab the new bounding box coordinates for object
+            (success, box) = tracker.update(frame)
 
-    key = cv2.waitKey(1) & 0xFF
+            # check if tracking succeed
+            if success:
+                (x, y, w, h) = [int(v) for v in box]
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-    # if 's', select a bounding box to track
-    if key == ord("r"):
-        k = False
-        # select the box of object you want to track, then press ENTER / SPACE
-        initBB = cv2.selectROI("frame", frame, fromCenter=False,
-                               showCrosshair=True)
+        key = cv2.waitKey(1) & 0xFF
 
-        # start opencv object tracker with supplied box coordinates
-        tracker.init(frame, initBB)
-        is_hand_hist_created = True
+        # if 's', select a bounding box to track
+        if key == ord("r"):
+            k = False
+            # select the box of object you want to track, then press ENTER / SPACE
+            initBB = cv2.selectROI("frame", frame, fromCenter=False,
+                                showCrosshair=True)
 
-    # if 'z', use skin tracking
-    if key == ord("z"):
-        is_hand_hist_created = True
-        hand_hist = track.hand_histogram(frame)
+            # start opencv object tracker with supplied box coordinates
+            tracker.init(frame, initBB)
+            is_hand_hist_created = True
 
-    if is_hand_hist_created:
-        if k:
-            frame = cv2.flip(frame, +1)
-            frame, max_cnt = track.manipulate(frame, hand_hist)
+        # if 'z', use skin tracking
+        if key == ord("z"):
+            is_hand_hist_created = True
+            hand_hist = track.hand_histogram(frame)
 
+        if is_hand_hist_created:
+            if k:
+                frame = cv2.flip(frame, +1)
+                frame, max_cnt = track.manipulate(frame, hand_hist)
+
+        else:
+            frame = track.draw_rect(frame)
+
+        cv2.imshow("Frame",frame)
+
+        # if 'q', quit
+        if key == ord("q"):
+            break
+
+        # initialize screen on pygame screen
+        screen.fill([0, 0, 0])
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame = frame.swapaxes(0, 1)
+        
+        # input frame to pygame screen from opencv
+        frame = pygame.surfarray.make_surface(frame)
+        screen.blit(frame, (0, 0))
+        draw(screen, max_cnt, x, y, w, h)
+
+        # update info
+        pygame.display.update()
+
+        # quit
+        for event in pygame.event.get():
+            if event.type == QUIT or event.type == KEYDOWN:
+                sys.exit(0)
+
+    # if using webcam, release the pointer
+    if not args.get("video", False):
+        vs.stop()
+    # otherwise, release the file pointer
     else:
-        frame = track.draw_rect(frame)
+        vs.release()
 
-    cv2.imshow("Frame",frame)
+    # close windows
+    cv2.destroyAllWindows()
 
-    # if 'q', quit
-    if key == ord("q"):
-        break
-
-    # initialize screen on pygame screen
-    screen.fill([0, 0, 0])
-    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    frame = frame.swapaxes(0, 1)
-    
-    # input frame to pygame screen from opencv
-    frame = pygame.surfarray.make_surface(frame)
-    screen.blit(frame, (0, 0))
-    draw(screen, max_cnt, x, y, w, h)
-
-    # update info
-    pygame.display.update()
-
-    # quit
-    for event in pygame.event.get():
-        if event.type == QUIT or event.type == KEYDOWN:
-            sys.exit(0)
-
-# if using webcam, release the pointer
-if not args.get("video", False):
-    vs.stop()
-# otherwise, release the file pointer
-else:
-    vs.release()
-
-# close windows
-cv2.destroyAllWindows()
+if __name__ == '__main__':
+    main()
