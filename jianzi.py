@@ -24,8 +24,8 @@ k = True
 max_cnt = None
 
 # initialize size and global variables for ball
-WIDTH = 800
-HEIGHT = 600
+WIDTH = 1000
+HEIGHT = 750
 ball_vel = [0, 0]
 ball_x = 0
 score = 0
@@ -83,7 +83,7 @@ def ball_init():
     ball_x = int(random.randrange(1, WIDTH + 1 - rec.width))
     rec.left = ball_x
     rec.centery = 1
-    horz = int(random.randrange(1, 4))
+    horz = int(random.randrange(2, 4))
     vert = 0
     ball_vel = [horz, vert]
 
@@ -102,7 +102,7 @@ def update():
     if abs(ball_vel[1]) >= 24.0:
         vel_y = random.uniform(0.8, 0.9)
     else:
-        vel_y = random.uniform(1, 1.2)
+        vel_y = random.uniform(1.05, 1.2)
     ball_vel[0] *= vel_x
     ball_vel[1] *= vel_y    
 
@@ -114,9 +114,9 @@ def draw(canvas, cnt, x, y, w, h):
     ball_vel[1] += 0.981
 
     if ball_vel[0] > 0:
-        ball_vel[0] = int(random.randrange(1, 4))
+        ball_vel[0] = int(random.randrange(2, 4))
     else:
-        ball_vel[0] = int(random.randrange(-4, -1))
+        ball_vel[0] = int(random.randrange(-4, -2))
     rec.centerx += int(ball_vel[0])
     rec.centery += int(ball_vel[1])
 
@@ -137,7 +137,7 @@ def draw(canvas, cnt, x, y, w, h):
 
     # check collision with contour
     if cnt is not None:
-        dist = cv2.pointPolygonTest(cnt, (rec.centerx, rec.top), True)
+        dist = cv2.pointPolygonTest(cnt, rec.center, True)
     
     if dist >= 0 :
         update()
@@ -169,7 +169,7 @@ def main():
             break
 
         # resize the frame and grab the frame dimensions
-        frame = imutils.resize(frame, width=800)
+        frame = imutils.resize(frame, width=1000)
         (H, W) = frame.shape[:2]
 
         x = 0
