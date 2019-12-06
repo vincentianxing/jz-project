@@ -186,7 +186,7 @@ def main():
             hand_hist = hand_histogram(frame)
 
         if is_hand_hist_created:
-            frame = manipulate(frame, hand_hist)
+            frame = manipulate(frame, hand_hist)[0]
             # tracking with background removed
             #frame = manipulate(rgbframe, hand_hist)
 
