@@ -137,7 +137,7 @@ def manipulate(frame, hand_hist):
     contour_list = contours(hist_mask_image)
     # find max contour
     max_cont, max_cont_i = max_contour(contour_list, frame)
-    # cv2.drawContours(frame, contour_list, max_cont_i, [0, 0, 255], 4)
+    cv2.drawContours(frame, contour_list, max_cont_i, [0, 0, 255], 4)
 
     # convert contour to 2d coordinates
     c = np.array(max_cont).squeeze()
