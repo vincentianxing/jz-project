@@ -6,7 +6,9 @@ import time
 import cv2
 import random
 import skin_tracking as track
+import jianzivz as jz
 
+# initialize global variablews for tracking
 is_hand_hist_created = False
 hand_hist = None  # histogram generated from hand sample
 size = 9  # number of rectangles
@@ -19,12 +21,8 @@ k = True
 
 # parsing arguments
 ap = argparse.ArgumentParser()
-# --video : optional path to the input video file
-# use your webcam if no arguments
 ap.add_argument("-v", "--video", type=str,
-                help="path to input video file")
-# OpenCV object tracker
-# set to kcf(Kernelized Correlation Filters) by default
+                help="path to input video file")  # use your webcam if no arguments
 ap.add_argument("-t", "--tracker", type=str, default="kcf",
                 help="OpenCV object tracker type")
 args = vars(ap.parse_args())
@@ -152,7 +150,7 @@ while True:
                 direction = 2
                 changeMode = 1
 
-              # game over when hitpoint reaches 0
+            # game over when hitpoint reaches 0
             if count < 0:
                 break
 
@@ -398,7 +396,7 @@ while True:
                 else:
                     circleY = circleY + 5 + dvelocity
                     dvelocity += 1
-            #slow down when rising
+            # slow down when rising
             elif direction == 2:
                 circleX = circleX - 3
                 circleY = circleY - 5 + dvelocity

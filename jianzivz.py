@@ -214,9 +214,6 @@ while True:
     screen.fill([0, 0, 0])
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     frame = frame.swapaxes(0, 1)
-
-    # flip
-    frame = cv2.flip(frame, 0)
     
     # input frame to pygame screen from opencv
     frame = pygame.surfarray.make_surface(frame)
@@ -225,6 +222,9 @@ while True:
 
     # update info
     pygame.display.update()
+
+    # flip
+    frame = cv2.flip(frame, 0)
 
     # quit
     for event in pygame.event.get():

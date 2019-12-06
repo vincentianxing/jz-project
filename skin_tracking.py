@@ -149,8 +149,6 @@ def manipulate(frame, hand_hist):
         y = value[1]
         print (x, y)
 
-    # fiiting in a shape TODO
-
     for c in max_cont:
         M = cv2.moments(c)
         if M['m00'] != 0:
@@ -188,7 +186,7 @@ def main():
         if is_hand_hist_created:
             frame = manipulate(frame, hand_hist)[0]
             # tracking with background removed
-            #frame = manipulate(rgbframe, hand_hist)
+            frame = manipulate(rgbframe, hand_hist)
 
         else:
             frame = draw_rect(frame)
