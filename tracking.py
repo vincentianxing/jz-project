@@ -54,7 +54,8 @@ def hand_histogram(frame):
     
     # create a histogram using the roi matrix for the skin color
     hand_hist = cv2.calcHist([roi], [0, 1], None, [180, 256], [0, 180, 0, 256])
-    return cv2.normalize(hand_hist, hand_hist, 0, 255, cv2.NORM_MINMAX)
+    h = cv2.normalize(hand_hist, hand_hist, 0, 255, cv2.NORM_MINMAX)
+    return h
 
 # find components of the frame that contains skin with back projection
 def hist_masking(frame, hist):
