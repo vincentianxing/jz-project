@@ -110,7 +110,7 @@ while True:
     if frame is None:
         break
     # resize the frame and grab the frame dimensions TODO
-    frame = imutils.resize(frame, width=1000)
+    frame = imutils.resize(frame, width=800)
     (H, W) = frame.shape[:2]
 
     # check if is tracking an object
@@ -660,12 +660,12 @@ while True:
             jz.screen_init()
             jz.init()
             jz.screen.fill([0, 0, 0])
-            jz.frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            jz.frame = jz.frame.swapaxes(0, 1)
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            frame = frame.swapaxes(0, 1)
             
             # input frame to pygame screen from opencv
-            jz.frame = pygame.surfarray.make_surface(jz.frame)
-            jz.screen.blit(jz.frame, (0, 0))
+            frame = pygame.surfarray.make_surface(frame)
+            jz.screen.blit(frame, (0, 0))
             jz.draw(jz.screen, max_cnt, x, y, w, h)
 
             # update info
