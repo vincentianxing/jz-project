@@ -246,7 +246,7 @@ while True:
 
     if is_hand_hist_created:
         if k:
-            frame, max_cnt = track.manipulate(frame, hand_hist)
+            frame = cv2.flip(frame, +1)
 
     else:
         frame = track.draw_rect(frame)
@@ -259,7 +259,7 @@ while True:
     screen.fill([0, 0, 0])
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     frame = frame.swapaxes(0, 1)
-    
+
     # input frame to pygame screen
     frame = pygame.surfarray.make_surface(frame)
     screen.blit(frame, (0, 0))
