@@ -432,7 +432,7 @@ while True:
 
     if is_hand_hist_created:
         if k:
-            frame = track.manipulate(frame, hand_hist)
+            frame, max_cnt = track.manipulate(frame, hand_hist)
 
     else:
         frame = track.draw_rect(frame)
