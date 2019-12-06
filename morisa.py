@@ -5,7 +5,7 @@ import imutils
 import time
 import cv2
 import random
-import skin_tracking as track
+import tracking as track
 import numpy as np
 
 # parsing arguments

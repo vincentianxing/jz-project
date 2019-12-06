@@ -10,7 +10,7 @@ import pygame
 from pygame.locals import *
 import numpy as np
 import sys
-import skin_tracking as track
+import tracking as track
 
 # initialize global variables for tracking
 hand_hist = None  # histogram generated from hand sample
