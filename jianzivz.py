@@ -12,6 +12,7 @@ import numpy as np
 import sys
 import skin_tracking as track
 
+# initialize global variables for tracking
 hand_hist = None  # histogram generated from hand sample
 size = 9  # number of rectangles
 hand_rect_one_x = None
@@ -22,32 +23,24 @@ traverse_point = []
 k = True
 max_cnt = None
 
-
 # parsing arguments
 ap = argparse.ArgumentParser()
 ap.add_argument('--input', type=str,
                 help='Path to a video or a sequence of image.', default='vtest.avi')
 ap.add_argument('--algo', type=str,
                 help='Background subtraction method (KNN, MOG2).', default='MOG2')
-# --video : optional path to the input video file
-# use your webcam if no arguments
 ap.add_argument("-v", "--video", type=str,
-                help="path to input video file")
-# OpenCV object tracker
-# set to kcf(Kernelized Correlation Filters) by default
+                help="path to input video file") # use your webcam if no arguments
 ap.add_argument("-t", "--tracker", type=str, default="kcf",
-                help="OpenCV object tracker type")
-
+                help="OpenCV object tracker type")  # set tracker to kcf(Kernelized Correlation Filters) by default
 arg = ap.parse_args()
 args = vars(ap.parse_args())
 
-# call appropriate object tracker constructor
 # intialize dict for tracker
 OPENCV_OBJECT_TRACKERS = {
     "csrt": cv2.TrackerCSRT_create,
     "kcf": cv2.TrackerKCF_create,
 }
-# grab object tracker using dict
 tracker = OPENCV_OBJECT_TRACKERS[args["tracker"]]()
 
 # initialize bounding box coordinates
@@ -56,28 +49,20 @@ initBB = None
 # grab reference to webcam if no video given
 if not args.get("video", False):
     print("starting video stream...")
-    # read in webcam stream cv2.VideoCapture(0)
     vs = VideoStream(src=0).start()
     time.sleep(1.0)
 else:
     vs = cv2.VideoCapture(args["video"])
 
-#colors
-WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-
-#globals
+# initialize size and global variables for ball
 WIDTH = 800
 HEIGHT = 600
-# img_radius = 70
-PAD_WIDTH = 8
-PAD_HEIGHT = 80
-# ball_pos = [0,0]
 ball_vel = [0, 0]
+ball_x = 0
 score = 0
 dist = -1
 
-#canvas declaration
+# declare pygame canvas
 camera = cv2.VideoCapture(0)
 pygame.init()
 pygame.display.set_caption("Play Balls!")
@@ -86,34 +71,26 @@ image = pygame.image.load('jianzi.png')
 rec = image.get_rect()
 img_radius = int(rec.width/2)
 
-
 def ball_init():
-    global ball_pos, ball_vel, ball_x  # these are vectors stored as lists
-    # ball_x = int(random.randrange(0, WIDTH - img_radius))
+    global ball_vel, ball_x  # vectors stored as lists
     ball_x = int(random.randrange(1, WIDTH + 1 - rec.width))
-    # ball_pos = [ball_x, img_radius + 1]
     rec.left = ball_x
     rec.centery = 1
     horz = int(random.randrange(1, 4))
     vert = 0
-
-    #if right == False:
-    #    horz = - horz
     ball_vel = [horz, vert]
 
 # define event handlers
-
-
 def init():
-    global score  # these are floats
+    global score
     score = 0
     ball_init()
 
-
+# update position of ball
 def draw(canvas, cnt, x, y, w, h):
-    global ball_pos, ball_vel, score, dist
+    global ball_vel, score, dist
 
-    #update ball
+    # update velocity of ball
     ball_vel[1] += 0.981
 
     if ball_vel[0] > 0:
@@ -123,11 +100,10 @@ def draw(canvas, cnt, x, y, w, h):
     rec.centerx += int(ball_vel[0])
     rec.centery += int(ball_vel[1])
 
-    #draw ball
-    #pygame.draw.circle(canvas, RED, ball_pos, 20, 0)
+    # display image at position of ball
     screen.blit(image, rec.center)
 
-    #ball collision check on top and bottom walls
+    # collision check on top and bottom walls
     if int(rec.centery) <= 0.5:
         ball_vel[1] = - ball_vel[1]
     if int(rec.left) <= img_radius:
@@ -135,12 +111,7 @@ def draw(canvas, cnt, x, y, w, h):
     if int(rec.right) >= WIDTH - img_radius:
         ball_vel[0] = -ball_vel[0]
 
-    # if int(rec.centery) in range(y - img_radius, y + h - img_radius) and int(rec.centerx) in range(x - img_radius, x + w + img_radius):
-    #     score += 1
-    #     ball_vel[1] = -ball_vel[1]
-    #     ball_vel[0] *= 0.5
-    #     ball_vel[1] *= 1.0
-
+    # check collision within box
     if int(rec.bottom) in range(y - img_radius, y) and int(rec.centerx) in range(x - img_radius, x + w + img_radius):
         score += 1
         ball_vel[1] = -ball_vel[1]
@@ -152,15 +123,7 @@ def draw(canvas, cnt, x, y, w, h):
         ball_vel[0] *= vel_x
         ball_vel[1] *= vel_y
 
-    # if int(ball_pos[1]) >= y - img_radius:
-    #     if int(ball_pos[1]) <= y + h - 1 - img_radius:
-    #         if int(ball_pos[0]) == x - img_radius:
-    #             score += 1
-    #             ball_vel[0] = -ball_vel[0]
-    #         elif int(ball_pos[0]) == x + w - 1 - img_radius:
-    #             score += 1
-    #             ball_vel[0] = -ball_vel[0]
-
+    # check collision with contour
     if cnt is not None:
         dist = cv2.pointPolygonTest(cnt, rec.center, True)
     
@@ -178,11 +141,10 @@ def draw(canvas, cnt, x, y, w, h):
     if int(rec.centery) >= HEIGHT + 1 - img_radius:
         ball_init()
 
-    #update scores
+    # update score
     myfont1 = pygame.font.SysFont("Comic Sans MS", 20)
     label = myfont1.render("Score "+str(score), 1, (255, 255, 0))
     canvas.blit(label, (50, 20))
-
 
 init()
 
@@ -198,14 +160,10 @@ while True:
     if frame is None:
         break
 
-    # resize the frame and grab the frame dimensions TODO
+    # resize the frame and grab the frame dimensions
     frame = imutils.resize(frame, width=800)
     (H, W) = frame.shape[:2]
 
-    # update the background model for mask
-    #mask = backSub.apply(frame)  # frame -> mask
-
-    # declare x, y
     x = 0
     y = 0
     w = 0
@@ -219,12 +177,7 @@ while True:
         # check if tracking succeed
         if success:
             (x, y, w, h) = [int(v) for v in box]
-            #cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 255, 255), 2)
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-
-    # show the output frame
-    #flip = cv2.flip(frame, +1)
-    #cv2.imshow("frame", flip)
 
     key = cv2.waitKey(1) & 0xFF
 
@@ -253,20 +206,27 @@ while True:
 
     cv2.imshow("Frame",frame)
 
+    # if 'q', quit
     if key == ord("q"):
         break
 
+    # initialize screen on pygame screen
     screen.fill([0, 0, 0])
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     frame = frame.swapaxes(0, 1)
-
-    # input frame to pygame screen
+    
+    # input frame to pygame screen from opencv
     frame = pygame.surfarray.make_surface(frame)
     screen.blit(frame, (0, 0))
     draw(screen, max_cnt, x, y, w, h)
 
+    # update info
     pygame.display.update()
 
+    # flip
+    frame = cv2.flip(frame, 0)
+
+    # quit
     for event in pygame.event.get():
         if event.type == QUIT or event.type == KEYDOWN:
             sys.exit(0)
