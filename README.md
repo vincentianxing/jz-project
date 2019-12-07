@@ -1,5 +1,7 @@
 # Project Overview and Useful Links
 
+[![Build Status](https://travis-ci.com/vincentianxing/jz-project.svg?branch=master)](https://travis-ci.com/vincentianxing/jz-project)
+
 ## How to use
 
 * Select tracking mode:
