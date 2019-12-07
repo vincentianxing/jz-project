@@ -40,4 +40,4 @@ before_script:
 
 script:
   - pytest test.py
-  - python testlr.py
+  #- python testlr.py

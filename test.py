@@ -14,7 +14,7 @@ hand_rect_two_y = None
 traverse_point = []
 is_hand_hist_created = False
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture('v.mp4')
 cap_test = cap.isOpened()
 
 cx = -1
@@ -22,8 +22,8 @@ cy = -1
 
 while cap.isOpened():
     # read first frame
-    print(1)
     ret1, frame = cap.read()
+    #print(1)
 
     frame = track.draw_rect(frame)
     is_hand_hist_created = True
@@ -31,12 +31,13 @@ while cap.isOpened():
 
     # read next frame
     ret2, frame2 = cap.read()
+    #print(2)
 
     if is_hand_hist_created:
         frame2, max_cont = track.manipulate(frame, hand_hist)
         cx, cy = track.centroid(max_cont)
         a = np.array(max_cont)
-    
+    #print(3)
     cap.release()
 cv2.destroyAllWindows()
 
