@@ -8,7 +8,10 @@ import jianzi as jz
 import pygame
 from pygame.locals import *
 
+score = -1
+
 class TestStringMethods(unittest.TestCase):
+    global score
     jz.screen_init()
 
     # check if the screen active
@@ -23,9 +26,10 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(jz.img_radius, 35)
     
     jz.init()
+    score = jz.score
 
     def test_score(self):
-        self.assertEqual(jz.score, 0)
+        self.assertEqual(score, 0)
         self.assertEqual(jz.rec.centery, 1)
     
     jz.update()
