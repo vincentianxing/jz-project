@@ -66,4 +66,4 @@ Result of "testlr.py" for our pygame implementation: see testlr_result.jpg
   
 * Human foot keypoint dataset: <https://cmu-perceptual-computing-lab.github.io/foot_keypoint_dataset/>
 
-### Member: Ran Liu, Yuda Liu, Vincent Zhu
+### Member: Bena Liu, Ran Liu, Yuda Liu, Vincent Zhu
