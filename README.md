@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.com/vincentianxing/jz-project.svg?branch=master)](https://travis-ci.com/vincentianxing/jz-project)
 
+Result of "testlr.py" for our pygame implementation: see testlr_result.jpg
+
 ## Detection and Tracking with OpenCV
 
 * Videoio module: <https://docs.opencv.org/master/df/d2c/tutorial_table_of_content_videoio.html>
@@ -64,4 +66,4 @@
   
 * Human foot keypoint dataset: <https://cmu-perceptual-computing-lab.github.io/foot_keypoint_dataset/>
 
-### Member: Ran Liu, Yuda Liu, Vincent Zhu
+### Member: Bena Liu, Ran Liu, Yuda Liu, Vincent Zhu
