@@ -2,13 +2,6 @@
 
 [![Build Status](https://travis-ci.com/vincentianxing/jz-project.svg?branch=master)](https://travis-ci.com/vincentianxing/jz-project)
 
-## How to use
-
-* Select tracking mode:
-  * csrt: select tracking region and press 's'
-  * Background Subtraction: choose static background
-  * Skin detection: place your hand at sample taking region and press 'z'
-
 ## Detection and Tracking with OpenCV
 
 * Videoio module: <https://docs.opencv.org/master/df/d2c/tutorial_table_of_content_videoio.html>
@@ -16,9 +9,6 @@
 * Meanshift and Camshift for tracking object in video: <https://docs.opencv.org/master/d7/d00/tutorial_meanshift.html>
 
 * Object tracking: <https://www.pyimagesearch.com/2018/07/30/opencv-object-tracking/>
-  * `pip install --upgrade imutils`
-  * `pip install opencv-contrib-python`
-  * run: `python object-track.py --tracker csrt`
 
 * Background subtraction for generating foreground mask: <https://docs.opencv.org/master/d1/dc5/tutorial_background_subtraction.html>
 
