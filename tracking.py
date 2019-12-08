@@ -186,12 +186,13 @@ def main():
         if is_hand_hist_created:
             frame = manipulate(frame, hand_hist)[0]
             # tracking with background removed
-            # frame = manipulate(rgbframe, hand_hist)[0]
+            rgbframe = manipulate(rgbframe, hand_hist)[0]
 
         else:
             frame = draw_rect(frame)
 
         cv2.imshow("webcam", rescale_frame(frame))
+        cv2.imshow("mask", rescale_frame(rgbframe))
 
         if pressed_key == 27:
             break
