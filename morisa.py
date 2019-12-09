@@ -372,10 +372,10 @@ while True:
         # check collision with contour
         if (dist >= 0):
             if circleX < cx:
-                direction = 2
+                direction = 3
                 dvelocity = 0
             else:
-                direction = 3
+                direction = 2
                 dvelocity = 0
             changeMode = 1
 

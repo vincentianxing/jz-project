@@ -4,6 +4,22 @@
 
 Result of "testlr.py" for our pygame implementation: see testlr_result.jpg
 
+## How to use
+
+* "jianzi.py":
+  Run `python jianzi.py` to play with jianzi
+  * Press 'r' to use KCF tracking, then use mouse to select the object you want to track, and press "Enter"
+  * Cover all green squares with the skin color you want to track (for example, palce you hand so that all squares are covered), then press 'z' to use skin color tracking
+
+* "moriza.py":
+  Run `python moriza.py` to play Japanese style manic shooter game
+  * Press 's' to use KCF tracking, then use mouse to select the object you want to track, and press "Enter"
+  * Cover all green squares with the skin color you want to track (for example, palce you hand so that all squares are covered), then press 'z' to use skin color tracking
+
+* "tracking.py":
+  Run `python tracking.py` to see the result of tracking
+  * Cover all green squares with the skin color you want to track (for example, palce you hand so that all squares are covered), then press 'z'
+
 ## Detection and Tracking with OpenCV
 
 * Videoio module: <https://docs.opencv.org/master/df/d2c/tutorial_table_of_content_videoio.html>
