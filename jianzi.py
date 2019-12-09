@@ -102,7 +102,7 @@ def update():
     if abs(ball_vel[1]) >= 24.0:
         vel_y = random.uniform(0.8, 0.9)
     else:
-        vel_y = random.uniform(1.05, 1.2)
+        vel_y = random.uniform(1.1, 1.2)
     ball_vel[0] *= vel_x
     ball_vel[1] *= vel_y    
 
